@@ -28,7 +28,7 @@ export default function nav() {
         className={`${active === url ? "text-accent" : ""}`}
       >
         {icon}
-        <p className="text-xs">{name}</p>
+        <span className="text-xs">{name}</span>
       </Link>
     );
   };
