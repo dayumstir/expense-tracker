@@ -1,12 +1,32 @@
 import prisma from "../db";
 import { Request, Response } from "express";
 
-const getUsers = async (req: Request, res: Response) => {
+const getUsers = async (_req: Request, res: Response) => {
   try {
     const users = await prisma.user.findMany();
     res.send(users);
   } catch (err) {
     if (err instanceof Error) {
+      console.error(err.message);
+    } else {
+      console.log("Unexpected error", err);
+    }
+  }
+};
+
+const getUser = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const user = await prisma.user.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+    res.json(user);
+  } catch (err) {
+    if (err instanceof Error) {
+      res.status(404); // not found
+      res.json({ error: "id does not exist!" });
       console.error(err.message);
     } else {
       console.log("Unexpected error", err);
@@ -25,6 +45,8 @@ const createUser = async (req: Request, res: Response) => {
     res.json(user);
   } catch (err) {
     if (err instanceof Error) {
+      res.status(409); // conflict
+      res.json({ error: "email is already in use!" });
       console.error(err.message);
     } else {
       console.log("Unexpected error", err);
@@ -32,22 +54,24 @@ const createUser = async (req: Request, res: Response) => {
   }
 };
 
-export { getUsers, createUser };
+const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const user = await prisma.user.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+    res.json(user);
+  } catch (err) {
+    if (err instanceof Error) {
+      res.status(404); // not found
+      res.json({ error: "id does not exist!" });
+      console.error(err.message);
+    } else {
+      console.log("Unexpected error", err);
+    }
+  }
+};
 
-// app.post(`/createUser`, async (req, res) => {
-//     try {
-//       const { email } = req.body;
-
-//       const result = await prisma.user.create({
-//         data: {
-//           email,
-//         },
-//       });
-
-//       res.json(result);
-//     } catch (err) {
-//       res.status(409); // conflict
-//       res.json({ error: "email is already in use!" });
-//       console.error(err.message);
-//     }
-//   });
+export { getUsers, getUser, createUser, deleteUser };

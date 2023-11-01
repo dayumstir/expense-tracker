@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="h-screen w-screen bg-neutral">
       <Nav />
-      <Outlet />
+      <Outlet /> 
     </div>
   );
 }
