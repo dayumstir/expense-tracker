@@ -25,28 +25,7 @@ const getUser = async (req: Request, res: Response) => {
     res.json(user);
   } catch (err) {
     if (err instanceof Error) {
-      res.status(404); // not found
-      res.json({ error: "id does not exist!" });
-      console.error(err.message);
-    } else {
-      console.log("Unexpected error", err);
-    }
-  }
-};
-
-const createUser = async (req: Request, res: Response) => {
-  try {
-    const { email } = req.body;
-    const user = await prisma.user.create({
-      data: {
-        email,
-      },
-    });
-    res.json(user);
-  } catch (err) {
-    if (err instanceof Error) {
-      res.status(409); // conflict
-      res.json({ error: "email is already in use!" });
+      res.status(404).json({ error: "id does not exist!" });
       console.error(err.message);
     } else {
       console.log("Unexpected error", err);
@@ -65,8 +44,7 @@ const deleteUser = async (req: Request, res: Response) => {
     res.json(user);
   } catch (err) {
     if (err instanceof Error) {
-      res.status(404); // not found
-      res.json({ error: "id does not exist!" });
+      res.status(404).json({ error: "id does not exist!" });
       console.error(err.message);
     } else {
       console.log("Unexpected error", err);
@@ -74,4 +52,4 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
-export { getUsers, getUser, createUser, deleteUser };
+export { getUsers, getUser, deleteUser };
