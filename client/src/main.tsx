@@ -3,11 +3,11 @@ import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./components/Home.tsx";
-import Add from "./components/Add.tsx";
-import Settings from "./components/Settings.tsx";
-import Signup from "./components/Signup.tsx";
-import Login from "./components/Login.tsx";
+import Home from "./pages/Home.tsx";
+import Settings from "./pages/Settings.tsx";
+import Signup from "./pages/auth/Signup.tsx";
+import Login from "./pages/auth/Login.tsx";
+import History from "./pages/History.tsx";
 
 const router = createBrowserRouter([
   {
@@ -19,8 +19,8 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/add",
-        element: <Add />,
+        path: "/history",
+        element: <History />,
       },
       {
         path: "/settings",

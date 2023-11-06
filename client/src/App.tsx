@@ -1,12 +1,16 @@
-import Home from "./components/Home";
 import Nav from "./components/Nav";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import AddExpense from "./components/AddExpense";
+import { useEffect } from "react";
 
 function App() {
+  const isSettings = useLocation().pathname.includes("settings");
+
   return (
-    <div className="h-screen w-screen bg-neutral">
+    <div className="bg-neutral">
       <Nav />
-      <Outlet /> 
+      <Outlet />
+      <AddExpense isSettings={isSettings} />
     </div>
   );
 }
