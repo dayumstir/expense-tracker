@@ -2,12 +2,18 @@ import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import Calendar from "./Calendar";
 import axios from "axios";
 
-export default function Add() {
+type Props = {
+  closeDrawer: Function;
+};
+
+export default function Add(props: Props) {
+  const { closeDrawer } = props;
+
   const [currency, setCurrency] = useState("SGD");
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState(new Date());
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [buttonDisabled, setButtonDisabled] = useState(true);
 
   const categories = [
@@ -26,7 +32,7 @@ export default function Add() {
 
   const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
     const num = e.target.value;
-    const regex = /^\d*\.{0,1}\d{0,2}$/;
+    const regex = /^\d{0,8}\.{0,1}\d{0,2}$/;
     if (regex.test(num)) {
       setAmount(num);
     }
@@ -43,7 +49,7 @@ export default function Add() {
 
   const handleCategoryChange = (e: ChangeEvent<HTMLInputElement>) => {
     const category = e.target.value;
-    setCategory(category);
+    setSelectedCategory(category);
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -51,28 +57,44 @@ export default function Add() {
 
     try {
       const expense = {
+        currency: currency,
         amount: amount,
         title: title,
         date: date,
-        category: category,
+        category: selectedCategory,
       };
       const response = await axios.post(
         "http://localhost:8080/expenses",
         expense,
       );
-      console.log("User logged in successfully!", response.data);
+      console.log("Expense saved successfully!", response.data);
+      resetFields();
+      closeDrawer();
     } catch (error) {
       console.error("Expense creation failed:", error);
     }
   };
 
+  const resetFields = () => {
+    setCurrency("SGD");
+    setAmount("");
+    setDate(new Date());
+    setTitle("");
+    setSelectedCategory("");
+  };
+
   useEffect(() => {
-    if (amount !== "" && amount !== "0" && title !== "" && category !== "") {
+    if (
+      amount !== "" &&
+      amount !== "0" &&
+      title !== "" &&
+      selectedCategory !== ""
+    ) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);
     }
-  }, [amount, title, category]);
+  }, [amount, title, selectedCategory]);
 
   return (
     <div className="flex w-full flex-col justify-center p-8">
@@ -141,6 +163,7 @@ export default function Add() {
                   className="btn normal-case"
                   type="radio"
                   name="category"
+                  checked={category === selectedCategory}
                   value={category}
                   aria-label={category}
                   onChange={handleCategoryChange}

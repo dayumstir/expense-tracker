@@ -42,7 +42,7 @@ const options = {
     clearBtn: "",
     icons: "",
     text: "",
-    disabledText: "opacity-0 pointer-events-none",
+    disabledText: "opacity-30",
     input: "",
     inputIcon: "",
     selected: "dark:bg-primary dark:hover:bg-primary/90",

@@ -39,7 +39,7 @@ export default function AddExpense(props: Props) {
             : "translate-y-full duration-500"
         } transition-transform`}
       >
-        <Add />
+        <Add closeDrawer={closeDrawer} />
         <button
           className="btn btn-circle btn-ghost btn-sm absolute right-8 top-8"
           onClick={closeDrawer}

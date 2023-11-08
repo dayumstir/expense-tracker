@@ -11,18 +11,19 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
+  id       Int        @id @default(autoincrement())
   name     String
-  email    String @unique
+  email    String     @unique
   password String
   // Expense  Expense[]
-  // Category Category[]
+  Category Category[]
 }
 
 model Expense {
   id       Int      @id @default(autoincrement())
+  currency String
+  amount   Decimal  @db.Decimal(10, 2)
   title    String
-  amount   Decimal
   date     DateTime
   category String
   // userId     Int
@@ -35,6 +36,6 @@ model Category {
   id     Int    @id @default(autoincrement())
   name   String
   userId Int
-  // user    User      @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
   // Expense Expense[]
 }
