@@ -5,7 +5,7 @@ import {
 } from "../controllers/expenseController";
 
 const router = express.Router();
-router.post("/", createExpense);
-router.get("/", getExpensesByUser);
+router.post("/:userId", createExpense);
+router.get("/:userId", getExpensesByUser);
 
 export default router;

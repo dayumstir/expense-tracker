@@ -15,7 +15,7 @@ model User {
   name     String
   email    String     @unique
   password String
-  // Expense  Expense[]
+  Expense  Expense[]
   Category Category[]
 }
 
@@ -26,8 +26,8 @@ model Expense {
   title    String
   date     DateTime
   category String
-  // userId     Int
-  // user       User     @relation(fields: [userId], references: [id])
+  userId   Int
+  user     User     @relation(fields: [userId], references: [id])
   // categoryId Int
   // category   Category @relation(fields: [categoryId], references: [id])
 }

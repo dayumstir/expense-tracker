@@ -1,6 +1,7 @@
-import { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { useState, useEffect, ChangeEvent, FormEvent, useContext } from "react";
 import Calendar from "./Calendar";
 import axios from "axios";
+import UserContext from "../../../context/UserContext";
 
 type Props = {
   closeDrawer: Function;
@@ -14,6 +15,7 @@ export default function Add(props: Props) {
   const [date, setDate] = useState(new Date());
   const [title, setTitle] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const { currentUser, setCurrentUser } = useContext(UserContext);
 
   const categories = [
     "Food",
@@ -63,10 +65,9 @@ export default function Add(props: Props) {
         category: selectedCategory,
       };
       const response = await axios.post(
-        "http://localhost:8080/expenses",
+        `http://localhost:8080/expenses/${currentUser?.id}`,
         expense,
       );
-      console.log("Expense saved successfully!", response.data);
       resetFields();
       closeDrawer();
     } catch (error) {

@@ -2,7 +2,7 @@ import Nav from "./components/Nav";
 import { Outlet, useLocation } from "react-router-dom";
 import AddExpense from "./pages/AddExpense";
 import { useState } from "react";
-import UserContext, { User } from "./context/userContext";
+import UserContext, { User } from "./context/UserContext";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);

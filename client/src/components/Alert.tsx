@@ -1,6 +1,6 @@
 type Props = {
   type: "success" | "error";
-  message: String;
+  message: string;
 };
 
 export default function Alert(props: Props) {

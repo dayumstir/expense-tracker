@@ -79,7 +79,6 @@ export default function Signup() {
           password: password,
         };
         const response = await axios.post("http://localhost:8080/signup", user);
-        console.log("User signed up successfully!", response.data);
         navigate("/");
       } catch (error) {
         setErrors({

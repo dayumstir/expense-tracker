@@ -1,7 +1,7 @@
 import { useState, useContext, ChangeEvent, FormEvent } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import UserContext from "../../context/userContext";
+import UserContext from "../../context/UserContext";
 
 type Errors = {
   [key: string]: string;
@@ -67,9 +67,7 @@ export default function Login() {
           password: password,
         };
         const response = await axios.post("http://localhost:8080/login", user);
-        const userContext = { id: response.data.id, name: response.data.name };
-        console.log("User logged in successfully!", userContext);
-        setCurrentUser(userContext);
+        setCurrentUser({ id: response.data.id, name: response.data.name });
         navigate("/");
       } catch (error) {
         setErrors({

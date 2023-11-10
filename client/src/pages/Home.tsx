@@ -1,22 +1,14 @@
 import { useContext, useEffect } from "react";
-import UserContext from "../context/userContext";
+import UserContext from "../context/UserContext";
 
 export default function Home() {
   const { currentUser, setCurrentUser } = useContext(UserContext);
 
-  const print = () => {
-    console.log(currentUser);
-  };
-
-  useEffect(() => {
-    print();
-  }, []);
-
   return (
-    <main className="w-full p-8">
-      <h2 className="text-2xl font-bold">Welcome,</h2>
+    <main className="mb-16 w-full p-8">
+      <h2 className="text-3xl font-bold">Hello,</h2>
       <h1 className="text-5xl font-bold tracking-wider text-accent">
-        {currentUser?.name || "User"}
+        {(currentUser?.name || "User") + "!"}
       </h1>
 
       <div className="stats stats-vertical my-4 shadow lg:stats-horizontal ">
