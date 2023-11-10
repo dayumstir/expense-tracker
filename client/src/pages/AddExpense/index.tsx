@@ -1,13 +1,10 @@
 import { useState } from "react";
 import Add from "./components/Add";
 import { RxPlus, RxCross2 } from "react-icons/rx";
+import { useLocation } from "react-router-dom";
 
-type Props = {
-  isSettings: boolean;
-};
-
-export default function AddExpense(props: Props) {
-  const { isSettings } = props;
+export default function AddExpense() {
+  const isSettings = useLocation().pathname.includes("settings");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const toggleDrawer = () => {

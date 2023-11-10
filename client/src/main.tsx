@@ -8,6 +8,7 @@ import Settings from "./pages/Settings.tsx";
 import Signup from "./pages/auth/Signup.tsx";
 import Login from "./pages/auth/Login.tsx";
 import History from "./pages/History.tsx";
+import Layout from "./pages/Layout.tsx";
 
 const router = createBrowserRouter([
   {
@@ -16,20 +17,26 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />,
+        element: <Layout />,
+        children: [
+          {
+            path: "/",
+            element: <Home />,
+          },
+          {
+            path: "/history",
+            element: <History />,
+          },
+          {
+            path: "/settings",
+            element: <Settings />,
+          },
+        ],
       },
-      {
-        path: "/history",
-        element: <History />,
-      },
-      {
-        path: "/settings",
-        element: <Settings />,
-      },
+      { path: "/signup", element: <Signup /> },
+      { path: "/login", element: <Login /> },
     ],
   },
-  { path: "/signup", element: <Signup /> },
-  { path: "/login", element: <Login /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

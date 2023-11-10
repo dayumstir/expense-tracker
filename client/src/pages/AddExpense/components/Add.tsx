@@ -14,7 +14,6 @@ export default function Add(props: Props) {
   const [date, setDate] = useState(new Date());
   const [title, setTitle] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [buttonDisabled, setButtonDisabled] = useState(true);
 
   const categories = [
     "Food",
@@ -83,18 +82,8 @@ export default function Add(props: Props) {
     setSelectedCategory("");
   };
 
-  useEffect(() => {
-    if (
-      amount !== "" &&
-      amount !== "0" &&
-      title !== "" &&
-      selectedCategory !== ""
-    ) {
-      setButtonDisabled(false);
-    } else {
-      setButtonDisabled(true);
-    }
-  }, [amount, title, selectedCategory]);
+  const buttonDisabled =
+    amount === "" || amount === "0" || title === "" || selectedCategory === "";
 
   return (
     <div className="flex w-full flex-col justify-center p-8">

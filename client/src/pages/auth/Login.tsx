@@ -1,6 +1,7 @@
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, useContext, ChangeEvent, FormEvent } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../../context/userContext";
 
 type Errors = {
   [key: string]: string;
@@ -14,6 +15,7 @@ export default function Login() {
     email: "",
     password: "",
   });
+  const { currentUser, setCurrentUser } = useContext(UserContext);
 
   const fields = ["Email", "Password"];
   const navigate = useNavigate();
@@ -65,7 +67,9 @@ export default function Login() {
           password: password,
         };
         const response = await axios.post("http://localhost:8080/login", user);
-        console.log("User logged in successfully!", response.data);
+        const userContext = { id: response.data.id, name: response.data.name };
+        console.log("User logged in successfully!", userContext);
+        setCurrentUser(userContext);
         navigate("/");
       } catch (error) {
         setErrors({

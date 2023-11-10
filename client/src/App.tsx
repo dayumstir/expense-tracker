@@ -1,16 +1,22 @@
 import Nav from "./components/Nav";
 import { Outlet, useLocation } from "react-router-dom";
-import AddExpense from "./components/AddExpense";
-import { useEffect } from "react";
+import AddExpense from "./pages/AddExpense";
+import { useState } from "react";
+import UserContext, { User } from "./context/userContext";
 
 function App() {
-  const isSettings = useLocation().pathname.includes("settings");
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   return (
     <div className="bg-neutral">
-      <Nav />
-      <Outlet />
-      <AddExpense isSettings={isSettings} />
+      <UserContext.Provider
+        value={{
+          currentUser,
+          setCurrentUser,
+        }}
+      >
+        <Outlet />
+      </UserContext.Provider>
     </div>
   );
 }

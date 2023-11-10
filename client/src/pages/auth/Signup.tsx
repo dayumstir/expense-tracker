@@ -127,6 +127,15 @@ export default function Signup() {
           Sign up
         </button>
       </form>
+      <p className="mt-20 opacity-60">
+        Already have an account?{" "}
+        <span
+          className="cursor-pointer text-accent"
+          onClick={() => navigate("/login")}
+        >
+          Login
+        </span>
+      </p>
     </div>
   );
 }

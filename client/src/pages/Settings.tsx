@@ -1,9 +1,22 @@
-import React from 'react'
+import React, { useContext } from "react";
+import UserContext from "../context/userContext";
+import { useNavigate } from "react-router-dom";
 
-type Props = {}
+export default function Settings() {
+  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
-export default function Settings({}: Props) {
+  const handleLogout = () => {
+    setCurrentUser(null);
+    navigate("/login");
+  };
+
   return (
-    <div>Settings</div>
-  )
+    <div>
+      <h1 className="text-3xl font-bold">Settings</h1>
+      <button className="btn btn-accent m-10" onClick={handleLogout}>
+        Logout
+      </button>
+    </div>
+  );
 }

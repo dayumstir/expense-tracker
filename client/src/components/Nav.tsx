@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 import { RxHome, RxFileText, RxGear } from "react-icons/rx";
 import { Link } from "react-router-dom";
 
-type IconType = typeof RxHome;
 type NavIconProps = {
-  icon: IconType;
+  icon: ReactElement;
   url: string;
   name: string;
 };
