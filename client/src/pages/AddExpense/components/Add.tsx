@@ -1,10 +1,11 @@
-import { useState, useEffect, ChangeEvent, FormEvent, useContext } from "react";
+import { useState, ChangeEvent, FormEvent, useContext, useEffect } from "react";
 import Calendar from "./Calendar";
 import axios from "axios";
 import UserContext from "../../../context/UserContext";
+import ExpenseContext from "../../../context/ExpenseContext";
 
 type Props = {
-  closeDrawer: Function;
+  closeDrawer: () => void;
 };
 
 export default function Add(props: Props) {
@@ -15,7 +16,23 @@ export default function Add(props: Props) {
   const [date, setDate] = useState(new Date());
   const [title, setTitle] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [type, setType] = useState("Add");
   const { currentUser, setCurrentUser } = useContext(UserContext);
+  const { currentExpense, setCurrentExpense } = useContext(ExpenseContext);
+
+  useEffect(() => {
+    if (currentExpense) {
+      setCurrency(currentExpense.currency);
+      setAmount(String(currentExpense.amount));
+      setDate(currentExpense.date);
+      setTitle(currentExpense.title);
+      setSelectedCategory(currentExpense.category);
+      setType("Update");
+    } else {
+      resetFields();
+      setType("Add");
+    }
+  }, [currentExpense]);
 
   const categories = [
     "Food",
@@ -56,22 +73,42 @@ export default function Add(props: Props) {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    try {
-      const expense = {
-        currency: currency,
-        amount: amount,
-        title: title,
-        date: date,
-        category: selectedCategory,
-      };
-      const response = await axios.post(
-        `http://localhost:8080/expenses/${currentUser?.id}`,
-        expense,
-      );
-      resetFields();
-      closeDrawer();
-    } catch (error) {
-      console.error("Expense creation failed:", error);
+    if (type === "Save") {
+      try {
+        const expense = {
+          currency: currency,
+          amount: amount,
+          title: title,
+          date: date,
+          category: selectedCategory,
+        };
+        const response = await axios.post(
+          `http://localhost:8080/expenses/${currentUser?.id}`,
+          expense,
+        );
+        resetFields();
+        closeDrawer();
+      } catch (error) {
+        console.error("Expense creation failed:", error);
+      }
+    } else if (type === "Update") {
+      try {
+        const expense = {
+          currency: currency,
+          amount: amount,
+          title: title,
+          date: date,
+          category: selectedCategory,
+        };
+        const response = await axios.put(
+          `http://localhost:8080/expenses/${currentExpense?.id}`,
+          expense,
+        );
+        resetFields();
+        closeDrawer();
+      } catch (error) {
+        console.error("Expense creation failed:", error);
+      }
     }
   };
 
@@ -88,7 +125,7 @@ export default function Add(props: Props) {
 
   return (
     <div className="flex w-full flex-col justify-center p-8">
-      <h1 className="w-full text-3xl font-bold">Add expense</h1>
+      <h1 className="w-full text-3xl font-bold">{type} expense</h1>
       <form className="flex flex-col gap-2 py-4" onSubmit={handleSubmit}>
         <div className="form-control w-full max-w-xs">
           <label className="label">
@@ -169,7 +206,7 @@ export default function Add(props: Props) {
             buttonDisabled && "pointer-events-none opacity-30"
           }`}
         >
-          Save
+          {type === "Add" ? "Save" : "Update"}
         </button>
       </form>
     </div>

@@ -3,34 +3,32 @@ import UserContext from "../context/UserContext";
 import axios from "axios";
 import { RxPaperPlane } from "react-icons/rx";
 import * as dayjs from "dayjs";
-
-type Expense = {
-  id: number;
-  title: string;
-  amount: number;
-  date: Date;
-  category: string;
-  currency: string;
-};
+import Expense from "../types/Expense";
+import ExpenseContext from "../context/ExpenseContext";
 
 export default function History() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const { currentUser, setCurrentUser } = useContext(UserContext);
+  const { currentExpense, setCurrentExpense } = useContext(ExpenseContext);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/expenses/${currentUser?.id}`,
+      );
+      setExpenses(response.data);
+    } catch (error) {
+      console.error("Expense retrieval failed:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:8080/expenses/${currentUser?.id}`,
-        );
-        setExpenses(response.data);
-      } catch (error) {
-        console.error("Expense retrieval failed:", error);
-      }
-    };
-
     fetchData();
   }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [currentExpense]);
 
   const thisMonth = dayjs().format("MMMM");
 
@@ -43,6 +41,10 @@ export default function History() {
       expenses.map((expense) => dayjs(expense.date).format("YYYY-MM-DD")),
     ),
   ];
+
+  const handleEditExpense = (e: Expense) => {
+    setCurrentExpense(e);
+  };
 
   const ExpenseBlock: React.FC<{ date: dayjs.Dayjs }> = ({ date }) => {
     const expensesWithMatchingDate = expenses.filter((e) => {
@@ -66,7 +68,10 @@ export default function History() {
 
   const ExpenseRow: React.FC<{ expense: Expense }> = ({ expense }) => {
     return (
-      <div className="join-item flex items-center border-b-2 border-slate-700 bg-base-100 px-6 py-4 last:border-b-0">
+      <div
+        className="join-item flex cursor-pointer items-center border-b-2 border-slate-700 bg-base-100 px-6 py-4 last:border-b-0 hover:opacity-80"
+        onClick={() => handleEditExpense(expense)}
+      >
         <div className="">
           <RxPaperPlane size={20} className="text-secondary" />
         </div>
@@ -101,7 +106,7 @@ export default function History() {
         {/* <graph></graph> */}
       </div>
       {uniqueDates.map((uniqueDate) => {
-        return <ExpenseBlock date={dayjs(uniqueDate)} />;
+        return <ExpenseBlock date={dayjs(uniqueDate)} key={uniqueDate} />;
       })}
     </div>
   );

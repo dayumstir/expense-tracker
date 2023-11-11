@@ -1,6 +1,6 @@
 import { createContext } from "react";
+import User from "../types/User";
 
-export type User = { id: number | null; name: string | null };
 
 type UserContextType = {
   currentUser: User | null;

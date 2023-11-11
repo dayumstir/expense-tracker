@@ -1,11 +1,13 @@
-import Nav from "./components/Nav";
-import { Outlet, useLocation } from "react-router-dom";
-import AddExpense from "./pages/AddExpense";
+import { Outlet } from "react-router-dom";
 import { useState } from "react";
-import UserContext, { User } from "./context/UserContext";
+import UserContext from "./context/UserContext";
+import User from "./types/User";
+import ExpenseContext from "./context/ExpenseContext";
+import Expense from "./types/Expense";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentExpense, setCurrentExpense] = useState<Expense | null>(null);
 
   return (
     <div className="bg-neutral">
@@ -15,7 +17,14 @@ function App() {
           setCurrentUser,
         }}
       >
-        <Outlet />
+        <ExpenseContext.Provider
+          value={{
+            currentExpense,
+            setCurrentExpense,
+          }}
+        >
+          <Outlet />
+        </ExpenseContext.Provider>
       </UserContext.Provider>
     </div>
   );

@@ -49,6 +49,7 @@ const getExpensesByUser = async (req: Request, res: Response) => {
     res.json(expenses);
   } catch (err) {
     if (err instanceof Error) {
+      res.status(404).json({ error: err.message });
       console.error(err.message);
     } else {
       console.log("Unexpected error", err);
@@ -56,4 +57,35 @@ const getExpensesByUser = async (req: Request, res: Response) => {
   }
 };
 
-export { createExpense, getExpensesByUser };
+const updateExpense = async (req: Request, res: Response) => {
+  try {
+    const expenseId = parseInt(req.params.expenseId);
+    await prisma.expense.findUnique({
+      where: {
+        id: expenseId,
+      },
+    });
+
+    const { currency, amount, title, date, category } = req.body;
+    const updatedExpense = await prisma.expense.update({
+      where: { id: Number(expenseId) },
+      data: {
+        currency,
+        amount: Number(amount),
+        title,
+        date,
+        category,
+      },
+    });
+    res.json(updatedExpense);
+  } catch (err) {
+    if (err instanceof Error) {
+      res.status(404).json({ error: err.message });
+      console.error(err.message);
+    } else {
+      console.log("Unexpected error", err);
+    }
+  }
+};
+
+export { createExpense, getExpensesByUser, updateExpense };

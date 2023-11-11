@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import UserContext from "../context/UserContext";
 
 export default function Home() {
@@ -8,7 +8,7 @@ export default function Home() {
     <main className="mb-16 w-full p-8">
       <h2 className="text-3xl font-bold">Hello,</h2>
       <h1 className="text-5xl font-bold tracking-wider text-accent">
-        {(currentUser?.name || "User") + "!"}
+        {(currentUser?.name || "Error") + "!"}
       </h1>
 
       <div className="stats stats-vertical my-4 shadow lg:stats-horizontal ">

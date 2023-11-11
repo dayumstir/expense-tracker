@@ -1,26 +1,32 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Add from "./components/Add";
 import { RxPlus, RxCross2 } from "react-icons/rx";
+import ExpenseContext from "../../context/ExpenseContext";
 import { useLocation } from "react-router-dom";
 
 export default function AddExpense() {
-  const isSettings = useLocation().pathname.includes("settings");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const { currentExpense, setCurrentExpense } = useContext(ExpenseContext);
+  const isSettings = useLocation().pathname.includes("settings");
 
-  const toggleDrawer = () => {
-    setIsDrawerOpen(!isDrawerOpen);
+  useEffect(() => {
+    if (currentExpense) {
+      openDrawer();
+    }
+  }, [currentExpense]);
+
+  const openDrawer = () => {
+    setIsDrawerOpen(true);
   };
 
   const closeDrawer = () => {
     setIsDrawerOpen(false);
+    setCurrentExpense(null);
   };
 
   return (
     <div className={`${isSettings && "hidden"} fixed bottom-24 right-6`}>
-      <button
-        className="btn btn-primary z-50 rounded-full"
-        onClick={toggleDrawer}
-      >
+      <button className="btn btn-primary rounded-full" onClick={openDrawer}>
         <RxPlus size={20} />
       </button>
       <div
