@@ -2,15 +2,15 @@ import { useState } from "react";
 import { RxArrowLeft, RxArrowRight } from "react-icons/rx";
 import Datepicker from "tailwind-datepicker-react";
 
-type Props = {
-  callback: Function;
+type CalendarProps = {
+  handleDateCallback: (date: Date) => void;
 };
 
-export default function Calendar(props: Props) {
-  const [show, setShow] = useState<boolean>(false);
+export default function Calendar({ handleDateCallback }: CalendarProps) {
+  const [show, setShow] = useState(false);
 
   const handleChange = (selectedDate: Date) => {
-    props.callback(selectedDate);
+    handleDateCallback(selectedDate);
   };
   const handleClose = (state: boolean) => {
     setShow(state);

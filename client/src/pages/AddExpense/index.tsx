@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import Add from "./components/Add";
+import Add from "./components/AddForm";
 import { RxPlus, RxCross2 } from "react-icons/rx";
 import ExpenseContext from "../../context/ExpenseContext";
 import { useLocation } from "react-router-dom";

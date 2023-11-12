@@ -1,6 +1,5 @@
 import { createContext } from "react";
-import User from "../types/User";
-
+import { User } from "../modelTypes";
 
 type UserContextType = {
   currentUser: User | null;

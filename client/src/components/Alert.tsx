@@ -1,11 +1,9 @@
-type Props = {
+type AlertProps = {
   type: "success" | "error";
   message: string;
 };
 
-export default function Alert(props: Props) {
-  const { type, message } = props;
-
+export default function Alert({ type, message }: AlertProps) {
   return (
     <div className={`alert alert-${type} fixed top-2`}>
       <svg

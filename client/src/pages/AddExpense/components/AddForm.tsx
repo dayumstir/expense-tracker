@@ -4,12 +4,11 @@ import axios from "axios";
 import UserContext from "../../../context/UserContext";
 import ExpenseContext from "../../../context/ExpenseContext";
 
-type Props = {
+type AddFormProps = {
   closeDrawer: () => void;
 };
 
-export default function Add(props: Props) {
-  const { closeDrawer } = props;
+export default function AddForm({ closeDrawer }: AddFormProps) {
 
   const [currency, setCurrency] = useState("SGD");
   const [amount, setAmount] = useState("");
@@ -41,6 +40,8 @@ export default function Add(props: Props) {
     "Fashion",
     "Sports",
     "Healthcare",
+    "Gifts",
+    "Others"
   ];
 
   const handleCurrencyChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -174,7 +175,7 @@ export default function Add(props: Props) {
             <span className="label-text">Date</span>
           </label>
           <div className="flex flex-wrap gap-2">
-            <Calendar callback={handleDateCallback} />
+            <Calendar handleDateCallback={handleDateCallback} />
           </div>
         </div>
 

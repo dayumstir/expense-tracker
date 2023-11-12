@@ -1,4 +1,10 @@
-type Expense = {
+export type User = {
+  id: number;
+  name: string;
+  email: string;
+};
+
+export type Expense = {
   id: number;
   title: string;
   amount: number;
@@ -6,5 +12,3 @@ type Expense = {
   category: string;
   currency: string;
 };
-
-export default Expense;

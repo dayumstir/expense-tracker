@@ -1,9 +1,9 @@
-import { ReactElement, useState } from "react";
+import { ReactNode, useState } from "react";
 import { RxHome, RxFileText, RxGear } from "react-icons/rx";
 import { Link } from "react-router-dom";
 
 type NavIconProps = {
-  icon: ReactElement;
+  icon: ReactNode;
   url: string;
   name: string;
 };
@@ -16,7 +16,7 @@ export default function nav() {
     setActive(id);
   };
 
-  const NavIcon: React.FC<NavIconProps> = ({ icon, url, name }) => {
+  const NavIcon = ({ icon, url, name }: NavIconProps) => {
     return (
       <Link
         to={url}

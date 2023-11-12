@@ -1,9 +1,8 @@
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
 import UserContext from "./context/UserContext";
-import User from "./types/User";
+import { User, Expense } from "./modelTypes";
 import ExpenseContext from "./context/ExpenseContext";
-import Expense from "./types/Expense";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);

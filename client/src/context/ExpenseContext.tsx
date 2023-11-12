@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import Expense from "../types/Expense";
+import { Expense } from "../modelTypes";
 
 type ExpenseContextType = {
   currentExpense: Expense | null;

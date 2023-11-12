@@ -1,10 +1,18 @@
-import React, { useState, useContext, useEffect } from "react";
-import UserContext from "../context/UserContext";
+import { useState, useContext, useEffect } from "react";
+import UserContext from "../../context/UserContext";
 import axios from "axios";
-import { RxPaperPlane } from "react-icons/rx";
 import * as dayjs from "dayjs";
-import Expense from "../types/Expense";
-import ExpenseContext from "../context/ExpenseContext";
+import { Expense } from "../../modelTypes";
+import ExpenseContext from "../../context/ExpenseContext";
+import ExpenseIcon from "./components/ExpenseIcon";
+
+type ExpenseRowProps = {
+  expense: Expense;
+};
+
+type ExpenseBlockProps = {
+  date: dayjs.Dayjs;
+};
 
 export default function History() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -46,7 +54,28 @@ export default function History() {
     setCurrentExpense(e);
   };
 
-  const ExpenseBlock: React.FC<{ date: dayjs.Dayjs }> = ({ date }) => {
+  const ExpenseRow = ({ expense }: ExpenseRowProps) => {
+    return (
+      <div
+        className="join-item flex cursor-pointer items-center border-b-2 border-slate-700 bg-base-100 px-6 py-4 last:border-b-0 hover:opacity-80"
+        onClick={() => handleEditExpense(expense)}
+      >
+        <div className="">
+          <ExpenseIcon category={expense.category} />
+        </div>
+        <div className="pl-6">
+          <div className="">{expense.title}</div>
+          <div className="text-xs text-slate-500">{expense.category}</div>
+        </div>
+        <div className="ml-auto">
+          {expense.currency !== "SGD"}
+          {"-$" + expense.amount}
+        </div>
+      </div>
+    );
+  };
+
+  const ExpenseBlock = ({ date }: ExpenseBlockProps) => {
     const expensesWithMatchingDate = expenses.filter((e) => {
       const expenseDate = dayjs(e.date);
       return date.isSame(expenseDate, "day");
@@ -61,27 +90,6 @@ export default function History() {
           {expensesWithMatchingDate.map((expense) => {
             return <ExpenseRow expense={expense} key={expense.id} />;
           })}
-        </div>
-      </div>
-    );
-  };
-
-  const ExpenseRow: React.FC<{ expense: Expense }> = ({ expense }) => {
-    return (
-      <div
-        className="join-item flex cursor-pointer items-center border-b-2 border-slate-700 bg-base-100 px-6 py-4 last:border-b-0 hover:opacity-80"
-        onClick={() => handleEditExpense(expense)}
-      >
-        <div className="">
-          <RxPaperPlane size={20} className="text-secondary" />
-        </div>
-        <div className="pl-6">
-          <div className="">{expense.title}</div>
-          <div className="text-xs text-slate-500">{expense.category}</div>
-        </div>
-        <div className="ml-auto">
-          {expense.currency !== "SGD"}
-          {"-$" + expense.amount}
         </div>
       </div>
     );
