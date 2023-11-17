@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, MouseEvent } from "react";
 import { RxHome, RxFileText, RxGear } from "react-icons/rx";
 import { Link } from "react-router-dom";
 
@@ -11,7 +11,7 @@ type NavIconProps = {
 export default function nav() {
   const [active, setActive] = useState(window.location.pathname);
 
-  const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
     const id = event.currentTarget.id;
     setActive(id);
   };

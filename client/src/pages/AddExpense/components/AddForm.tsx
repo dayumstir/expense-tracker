@@ -8,16 +8,30 @@ type AddFormProps = {
   closeDrawer: () => void;
 };
 
-export default function AddForm({ closeDrawer }: AddFormProps) {
+const categories = [
+  "Food",
+  "Travel",
+  "Entertainment",
+  "Fashion",
+  "Sports",
+  "Healthcare",
+  "Gifts",
+  "Others",
+];
 
+export default function AddForm({ closeDrawer }: AddFormProps) {
   const [currency, setCurrency] = useState("SGD");
   const [amount, setAmount] = useState("");
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState<Date>();
   const [title, setTitle] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [type, setType] = useState("Add");
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const { currentExpense, setCurrentExpense } = useContext(ExpenseContext);
+
+  useEffect(() => {
+    setDate(new Date());
+  }, []);
 
   useEffect(() => {
     if (currentExpense) {
@@ -32,17 +46,6 @@ export default function AddForm({ closeDrawer }: AddFormProps) {
       setType("Add");
     }
   }, [currentExpense]);
-
-  const categories = [
-    "Food",
-    "Travel",
-    "Entertainment",
-    "Fashion",
-    "Sports",
-    "Healthcare",
-    "Gifts",
-    "Others"
-  ];
 
   const handleCurrencyChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const currency = e.target.value;
@@ -62,10 +65,6 @@ export default function AddForm({ closeDrawer }: AddFormProps) {
     setTitle(title);
   };
 
-  const handleDateCallback = (selectedDate: Date) => {
-    setDate(selectedDate);
-  };
-
   const handleCategoryChange = (e: ChangeEvent<HTMLInputElement>) => {
     const category = e.target.value;
     setSelectedCategory(category);
@@ -73,43 +72,28 @@ export default function AddForm({ closeDrawer }: AddFormProps) {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
-    if (type === "Save") {
-      try {
-        const expense = {
-          currency: currency,
-          amount: amount,
-          title: title,
-          date: date,
-          category: selectedCategory,
-        };
-        const response = await axios.post(
+    const expense = {
+      currency: currency,
+      amount: amount,
+      title: title,
+      date: date,
+      category: selectedCategory,
+    };
+    try {
+      if (type === "Add") {
+        await axios.post(
           `http://localhost:8080/expenses/${currentUser?.id}`,
           expense,
         );
-        resetFields();
-        closeDrawer();
-      } catch (error) {
-        console.error("Expense creation failed:", error);
-      }
-    } else if (type === "Update") {
-      try {
-        const expense = {
-          currency: currency,
-          amount: amount,
-          title: title,
-          date: date,
-          category: selectedCategory,
-        };
-        const response = await axios.put(
+      } else if (type === "Update") {
+        await axios.put(
           `http://localhost:8080/expenses/${currentExpense?.id}`,
           expense,
         );
-        resetFields();
-        closeDrawer();
-      } catch (error) {
-        console.error("Expense creation failed:", error);
       }
+      closeDrawer();
+    } catch (error) {
+      console.error(`Expense ${type === "Add" ? "creation" : "update"} failed`);
     }
   };
 
@@ -175,7 +159,7 @@ export default function AddForm({ closeDrawer }: AddFormProps) {
             <span className="label-text">Date</span>
           </label>
           <div className="flex flex-wrap gap-2">
-            <Calendar handleDateCallback={handleDateCallback} />
+            <Calendar date={date} setDate={setDate} />
           </div>
         </div>
 

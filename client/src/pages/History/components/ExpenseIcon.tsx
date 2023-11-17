@@ -16,20 +16,20 @@ type ExpenseIconProps = {
 export default function ExpenseIcon({ category }: ExpenseIconProps) {
   switch (category) {
     case "Food":
-      return <LuPizza size={20} className="text-secondary" />;
+      return <LuPizza />;
     case "Travel":
-      return <LuPlane size={20} className="text-secondary" />;
+      return <LuPlane />;
     case "Entertainment":
-      return <LuPartyPopper size={20} className="text-secondary" />;
+      return <LuPartyPopper />;
     case "Fashion":
-      return <LuShirt size={20} className="text-secondary" />;
+      return <LuShirt />;
     case "Sports":
-      return <IoBasketballOutline size={20} className="text-secondary" />;
+      return <IoBasketballOutline />;
     case "Healthcare":
-      return <LuHeart size={20} className="text-secondary" />;
+      return <LuHeart />;
     case "Gifts":
-      return <LuGift size={20} className="text-secondary" />;
+      return <LuGift />;
     default:
-      return <LuWrench size={20} className="text-secondary" />;
+      return <LuWrench />;
   }
 }

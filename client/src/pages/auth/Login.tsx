@@ -67,7 +67,11 @@ export default function Login() {
           password: password,
         };
         const response = await axios.post("http://localhost:8080/login", user);
-        setCurrentUser({ id: response.data.id, name: response.data.name });
+        setCurrentUser({
+          id: response.data.id,
+          name: response.data.name,
+          email: response.data.email,
+        });
         navigate("/");
       } catch (error) {
         setErrors({
