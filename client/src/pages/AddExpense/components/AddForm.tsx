@@ -30,10 +30,6 @@ export default function AddForm({ closeDrawer }: AddFormProps) {
   const { currentExpense, setCurrentExpense } = useContext(ExpenseContext);
 
   useEffect(() => {
-    setDate(new Date());
-  }, []);
-
-  useEffect(() => {
     if (currentExpense) {
       setCurrency(currentExpense.currency);
       setAmount(String(currentExpense.amount));
@@ -188,7 +184,7 @@ export default function AddForm({ closeDrawer }: AddFormProps) {
         <button
           type="submit"
           className={`btn btn-accent btn-block mt-6 max-w-xs ${
-            buttonDisabled && "pointer-events-none opacity-30"
+            buttonDisabled ? "pointer-events-none opacity-30" : ""
           }`}
         >
           {type === "Add" ? "Save" : "Update"}

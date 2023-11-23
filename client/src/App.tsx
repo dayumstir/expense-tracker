@@ -9,7 +9,7 @@ function App() {
   const [currentExpense, setCurrentExpense] = useState<Expense | null>(null);
 
   return (
-    <div className="bg-neutral">
+    <div className="bg-neutral min-h-screen">
       <UserContext.Provider
         value={{
           currentUser,

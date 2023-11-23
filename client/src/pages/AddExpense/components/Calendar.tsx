@@ -1,4 +1,4 @@
-import { Dispatch, useContext, useEffect, useState } from "react";
+import { Dispatch, useContext, useEffect, useRef, useState } from "react";
 import { IoIosCalendar } from "react-icons/io";
 import { DayPicker, DayPickerDefaultProps } from "react-day-picker";
 import ExpenseContext from "../../../context/ExpenseContext";
@@ -30,49 +30,55 @@ const classNames: DayPickerDefaultProps["classNames"] = {
 };
 
 export default function Calendar({ date, setDate }: CalendarProps) {
-  const { currentExpense, setCurrentExpense } = useContext(ExpenseContext);
+  const [isVisible, setIsVisible] = useState(false);
+  const calendarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (currentExpense) {
-      setDate(currentExpense.date);
-    }
-  }, [currentExpense]);
+    const handleClickOutside = (event: MouseEvent) => {
+      // Check if the clicked element is outside the component
+      if (!calendarRef?.current?.contains(event.target as Node)) {
+        setIsVisible(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
+  const openCalendar = () => {
+    setIsVisible(true);
+    setDate(date);
+  };
 
   const handleDateSelection = () => {
-    // Close calendar
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur();
-    }
+    setIsVisible(false);
   };
 
   return (
-    <div className="dropdown w-full max-w-xs">
-      <label
-        tabIndex={0}
-        id="calendar-button"
-        className="btn w-full bg-base-100"
-      >
-        <div className="pointer-events-none absolute left-5 flex items-center gap-4">
-          <IoIosCalendar size={22} />
-          <p className="text-base font-normal normal-case">
-            {date ? dayjs(date).format("D MMM YYYY") : "Please select a date"}
-          </p>
-        </div>
-      </label>
+    <div className="w-full max-w-xs" ref={calendarRef}>
       <div
-        tabIndex={0}
-        className="dropdown-content top-0 z-10 rounded-md bg-base-100 shadow"
+        className="btn flex w-full justify-start gap-4 bg-base-100"
+        onClick={openCalendar}
       >
-        <DayPicker
-          classNames={classNames}
-          mode="single"
-          required
-          selected={date}
-          onSelect={setDate}
-          onDayClick={handleDateSelection}
-          showOutsideDays
-        />
+        <IoIosCalendar size={22} />
+        <p className="text-base font-normal normal-case">
+          {date ? dayjs(date).format("D MMM YYYY") : "Please select a date"}
+        </p>
       </div>
+      {isVisible && (
+        <div className="absolute z-10 -mt-12 rounded-md bg-base-100 shadow">
+          <DayPicker
+            classNames={classNames}
+            mode="single"
+            required
+            selected={date}
+            onSelect={setDate}
+            onDayClick={handleDateSelection}
+            showOutsideDays
+          />
+        </div>
+      )}
     </div>
   );
 }
