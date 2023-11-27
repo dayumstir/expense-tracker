@@ -9,11 +9,7 @@ import {
 } from "react-icons/lu";
 import { IoBasketballOutline } from "react-icons/io5";
 
-type ExpenseIconProps = {
-  category: string;
-};
-
-export default function ExpenseIcon({ category }: ExpenseIconProps) {
+export default function ExpenseIcon({ category }: { category: string }) {
   switch (category) {
     case "Food":
       return <LuPizza />;

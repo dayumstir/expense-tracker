@@ -1,19 +1,22 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { RxPlus, RxCross2 } from "react-icons/rx";
-import ExpenseContext from "../../context/ExpenseContext";
 import { useLocation } from "react-router-dom";
 import AddForm from "./components/AddForm";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { resetExpense } from "../../redux/expenseSlice";
 
 export default function AddExpense() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const { currentExpense, setCurrentExpense } = useContext(ExpenseContext);
   const isSettings = useLocation().pathname.includes("settings");
+  const currExpense = useSelector((state: RootState) => state.expense);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (currentExpense) {
+    if (currExpense.id) {
       openDrawer();
     }
-  }, [currentExpense]);
+  }, [currExpense]);
 
   const openDrawer = () => {
     setIsDrawerOpen(true);
@@ -21,7 +24,7 @@ export default function AddExpense() {
 
   const closeDrawer = () => {
     setIsDrawerOpen(false);
-    setCurrentExpense(null);
+    dispatch(resetExpense());
   };
 
   return (

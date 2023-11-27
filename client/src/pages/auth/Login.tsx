@@ -1,21 +1,21 @@
-import { useState, useContext, ChangeEvent, FormEvent } from "react";
-import axios from "axios";
+import { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import UserContext from "../../context/UserContext";
+import { useDispatch } from "react-redux";
+import { setUserId, setUserName, setUserEmail } from "../../redux/userSlice";
+import axios from "axios";
 
 type Errors = {
   [key: string]: string;
 };
 
 export default function Login() {
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<Errors>({
     email: "",
     password: "",
   });
-  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const dispatch = useDispatch();
 
   const fields = ["Email", "Password"];
   const navigate = useNavigate();
@@ -25,10 +25,6 @@ export default function Login() {
     const value = e.target.value;
 
     switch (type) {
-      case "Name":
-        setName(value.trim());
-        setErrors({ ...errors, name: "" });
-        break;
       case "Email":
         setEmail(value.trim());
         setErrors({ ...errors, email: "" });
@@ -67,7 +63,8 @@ export default function Login() {
           password: password,
         };
         const response = await axios.post("http://localhost:8080/login", user);
-        setCurrentUser({
+
+        updateUserRedux({
           id: response.data.id,
           name: response.data.name,
           email: response.data.email,
@@ -81,6 +78,20 @@ export default function Login() {
         console.error("Login failed:", error);
       }
     }
+  };
+
+  const updateUserRedux = ({
+    id,
+    name,
+    email,
+  }: {
+    id: number;
+    name: string;
+    email: string;
+  }) => {
+    dispatch(setUserId(id));
+    dispatch(setUserName(name));
+    dispatch(setUserEmail(email));
   };
 
   return (

@@ -8,7 +8,7 @@ type NavIconProps = {
   name: string;
 };
 
-export default function nav() {
+export default function Nav() {
   const [active, setActive] = useState(window.location.pathname);
 
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {

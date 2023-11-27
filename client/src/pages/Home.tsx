@@ -1,15 +1,13 @@
-import { useContext } from "react";
-import UserContext from "../context/UserContext";
+import { RootState } from "../redux/store";
+import { useSelector } from "react-redux";
 
 export default function Home() {
-  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const userName = useSelector((state: RootState) => state.user.name);
 
   return (
-    <main className="mb-16 w-full p-8">
+    <main className="w-full p-8">
       <h2 className="text-3xl font-bold">Hello,</h2>
-      <h1 className="text-5xl font-bold text-accent">
-        {currentUser?.name + "!"}
-      </h1>
+      <h1 className="text-5xl font-bold text-accent">{userName + "!"}</h1>
       <div className="join join-vertical my-4 w-full max-w-xs rounded-xl">
         <div className="join-item stats">
           <div className="stat">

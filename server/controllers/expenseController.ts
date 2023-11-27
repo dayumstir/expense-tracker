@@ -45,6 +45,15 @@ const getExpensesByUser = async (req: Request, res: Response) => {
       where: {
         userId: userId,
       },
+      select: {
+        id: true,
+        currency: true,
+        amount: true,
+        title: true,
+        date: true,
+        category: true,
+        // Exclude userId
+      },
     });
     res.json(expenses);
   } catch (err) {

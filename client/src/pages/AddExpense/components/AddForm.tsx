@@ -1,8 +1,8 @@
-import { useState, ChangeEvent, FormEvent, useContext, useEffect } from "react";
+import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import Calendar from "./Calendar";
 import axios from "axios";
-import UserContext from "../../../context/UserContext";
-import ExpenseContext from "../../../context/ExpenseContext";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
 
 type AddFormProps = {
   closeDrawer: () => void;
@@ -26,22 +26,22 @@ export default function AddForm({ closeDrawer }: AddFormProps) {
   const [title, setTitle] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [type, setType] = useState("Add");
-  const { currentUser, setCurrentUser } = useContext(UserContext);
-  const { currentExpense, setCurrentExpense } = useContext(ExpenseContext);
+  const userId = useSelector((state: RootState) => state.user.id);
+  const currExpense = useSelector((state: RootState) => state.expense);
 
   useEffect(() => {
-    if (currentExpense) {
-      setCurrency(currentExpense.currency);
-      setAmount(String(currentExpense.amount));
-      setDate(currentExpense.date);
-      setTitle(currentExpense.title);
-      setSelectedCategory(currentExpense.category);
+    if (currExpense.id) {
+      setCurrency(currExpense.currency!);
+      setAmount(String(currExpense.amount));
+      setDate(currExpense.date!);
+      setTitle(currExpense.title!);
+      setSelectedCategory(currExpense.category!);
       setType("Update");
     } else {
       resetFields();
       setType("Add");
     }
-  }, [currentExpense]);
+  }, [currExpense]);
 
   const handleCurrencyChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const currency = e.target.value;
@@ -77,13 +77,10 @@ export default function AddForm({ closeDrawer }: AddFormProps) {
     };
     try {
       if (type === "Add") {
-        await axios.post(
-          `http://localhost:8080/expenses/${currentUser?.id}`,
-          expense,
-        );
+        await axios.post(`http://localhost:8080/expenses/${userId}`, expense);
       } else if (type === "Update") {
         await axios.put(
-          `http://localhost:8080/expenses/${currentExpense?.id}`,
+          `http://localhost:8080/expenses/${currExpense.id}`,
           expense,
         );
       }
