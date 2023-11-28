@@ -1,7 +1,7 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setUserId, setUserName, setUserEmail } from "../../redux/userSlice";
+import { setUser } from "../../redux/userSlice";
 import axios from "axios";
 
 type Errors = {
@@ -63,12 +63,7 @@ export default function Login() {
           password: password,
         };
         const response = await axios.post("http://localhost:8080/login", user);
-
-        updateUserRedux({
-          id: response.data.id,
-          name: response.data.name,
-          email: response.data.email,
-        });
+        dispatch(setUser(response.data));
         navigate("/");
       } catch (error) {
         setErrors({
@@ -78,20 +73,6 @@ export default function Login() {
         console.error("Login failed:", error);
       }
     }
-  };
-
-  const updateUserRedux = ({
-    id,
-    name,
-    email,
-  }: {
-    id: number;
-    name: string;
-    email: string;
-  }) => {
-    dispatch(setUserId(id));
-    dispatch(setUserName(name));
-    dispatch(setUserEmail(email));
   };
 
   return (

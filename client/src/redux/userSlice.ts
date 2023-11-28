@@ -17,19 +17,16 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUserId: (state, action: PayloadAction<number>) => {
-      state.id = action.payload;
+    setUser: (state, action: PayloadAction<User>) => {
+      return action.payload;
     },
-    setUserName: (state, action: PayloadAction<string>) => {
-      state.name = action.payload;
-    },
-    setUserEmail: (state, action: PayloadAction<string>) => {
-      state.email = action.payload;
+    resetUser: (state) => {
+      return initialState;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setUserId, setUserName, setUserEmail } = userSlice.actions;
+export const { setUser, resetUser } = userSlice.actions;
 
 export default userSlice.reducer;
