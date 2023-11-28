@@ -14,13 +14,9 @@ export default function AddExpense() {
 
   useEffect(() => {
     if (currExpense.id) {
-      openDrawer();
+      setIsDrawerOpen(true);
     }
   }, [currExpense]);
-
-  const openDrawer = () => {
-    setIsDrawerOpen(true);
-  };
 
   const closeDrawer = () => {
     setIsDrawerOpen(false);

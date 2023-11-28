@@ -1,7 +1,6 @@
-import { Dispatch, useContext, useEffect, useRef, useState } from "react";
+import { Dispatch, useEffect, useRef, useState } from "react";
 import { IoIosCalendar } from "react-icons/io";
 import { DayPicker, DayPickerDefaultProps } from "react-day-picker";
-import ExpenseContext from "../../../context/ExpenseContext";
 import dayjs from "dayjs";
 
 type CalendarProps = {
@@ -35,7 +34,7 @@ export default function Calendar({ date, setDate }: CalendarProps) {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      // Check if the clicked element is outside the component
+      // Check if the clicked element is outside the calendar component
       if (!calendarRef?.current?.contains(event.target as Node)) {
         setIsVisible(false);
       }
@@ -49,10 +48,6 @@ export default function Calendar({ date, setDate }: CalendarProps) {
   const openCalendar = () => {
     setIsVisible(true);
     setDate(date);
-  };
-
-  const handleDateSelection = () => {
-    setIsVisible(false);
   };
 
   return (
@@ -72,10 +67,11 @@ export default function Calendar({ date, setDate }: CalendarProps) {
             classNames={classNames}
             mode="single"
             required
-            selected={date}
+            selected={new Date(date ?? new Date())}
             onSelect={setDate}
-            onDayClick={handleDateSelection}
+            onDayClick={() => setIsVisible(false)}
             showOutsideDays
+            defaultMonth={new Date(date ?? new Date())}
           />
         </div>
       )}

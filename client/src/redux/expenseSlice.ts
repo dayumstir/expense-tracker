@@ -24,17 +24,10 @@ export const expenseSlice = createSlice({
   initialState,
   reducers: {
     setExpense: (state, action: PayloadAction<Expense>) => {
-      state = action.payload;
+      return action.payload;
     },
     resetExpense: (state) => {
-      state = {
-        id: null,
-        currency: null,
-        amount: null,
-        title: null,
-        date: null,
-        category: null,
-      };
+      return initialState;
     },
   },
 });

@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import * as dayjs from "dayjs";
 import { Expense } from "../../redux/expenseSlice";

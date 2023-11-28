@@ -4,10 +4,6 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 
-type AddFormProps = {
-  closeDrawer: () => void;
-};
-
 const categories = [
   "Food",
   "Travel",
@@ -19,7 +15,7 @@ const categories = [
   "Others",
 ];
 
-export default function AddForm({ closeDrawer }: AddFormProps) {
+export default function AddForm({ closeDrawer }: {closeDrawer: () => void}) {
   const [currency, setCurrency] = useState("SGD");
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState<Date>();
