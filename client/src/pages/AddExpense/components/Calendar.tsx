@@ -1,11 +1,11 @@
-import { Dispatch, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { IoIosCalendar } from "react-icons/io";
 import { DayPicker, DayPickerDefaultProps } from "react-day-picker";
 import dayjs from "dayjs";
 
 type CalendarProps = {
   date: Date | undefined;
-  setDate: Dispatch<React.SetStateAction<Date | undefined>>;
+  setDate: Dispatch<SetStateAction<Date | undefined>>;
 };
 
 const classNames: DayPickerDefaultProps["classNames"] = {

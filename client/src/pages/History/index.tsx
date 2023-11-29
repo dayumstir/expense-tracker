@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import { Expense } from "../../redux/expenseSlice";
 import ExpenseIcon from "./components/ExpenseIcon";
 import Tabs from "./components/Tabs";
@@ -10,6 +10,9 @@ import { setExpense } from "../../redux/expenseSlice";
 
 export default function History() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [month, setMonth] = useState(dayjs().month());
+  const [year, setYear] = useState(dayjs().year());
+
   const userId = useSelector((state: RootState) => state.user.id);
   const currExpense = useSelector((state: RootState) => state.expense);
   const dispatch = useDispatch();
@@ -33,17 +36,22 @@ export default function History() {
     fetchData();
   }, [currExpense]);
 
-  const thisMonth = dayjs().format("MMMM");
+  const expensesOfMonth = expenses.filter((expense) => {
+    const date = dayjs(expense.date);
+    return date.month() === month && date.year() === year;
+  });
 
-  const totalSpending = expenses
-    .reduce((accumulator, expense) => accumulator + Number(expense.amount), 0)
+  const totalSpending = expensesOfMonth
+    .reduce((total, expense) => total + Number(expense.amount), 0)
     .toFixed(2);
 
   const uniqueDates = [
     ...new Set(
-      expenses.map((expense) => dayjs(expense.date).format("YYYY-MM-DD")),
+      expensesOfMonth.map((expense) =>
+        dayjs(expense.date).format("YYYY-MM-DD"),
+      ),
     ),
-  ].sort((a, b) => dayjs(b).diff(dayjs(a))); // Sort in descending order
+  ];
 
   const handleEditExpense = (e: Expense) => {
     dispatch(setExpense(e));
@@ -76,7 +84,7 @@ export default function History() {
   };
 
   const ExpenseBlock = ({ date }: { date: dayjs.Dayjs }) => {
-    const expensesWithMatchingDate = expenses.filter((e) => {
+    const expensesWithMatchingDate = expensesOfMonth.filter((e) => {
       const expenseDate = dayjs(e.date);
       return date.isSame(expenseDate, "day");
     });
@@ -98,11 +106,14 @@ export default function History() {
   return (
     <div className="p-8">
       <h1 className="text-3xl font-bold">History</h1>
-      <Tabs />
+      <Tabs month={month} setMonth={setMonth} year={year} setYear={setYear} />
       <div className="py-4">
         <div>
-          In <span className="font-semibold">{thisMonth}</span> you spent a
-          total of
+          In{" "}
+          <span className="font-semibold">
+            {dayjs().month(month).format("MMMM")}
+          </span>{" "}
+          you spent a total of
         </div>
         <div className="text-2xl font-bold text-secondary">
           {"$" + totalSpending}

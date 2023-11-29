@@ -45,6 +45,9 @@ const getExpensesByUser = async (req: Request, res: Response) => {
       where: {
         userId: userId,
       },
+      orderBy: {
+        date: 'desc',
+      },
       select: {
         id: true,
         currency: true,
