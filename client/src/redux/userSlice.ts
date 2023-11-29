@@ -2,15 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 type User = {
-  id: number | null;
-  name: string | null;
-  email: string | null;
+  id: number | undefined;
+  name: string | undefined;
+  email: string | undefined;
 };
 
 const initialState: User = {
-  id: null,
-  name: null,
-  email: null,
+  id: undefined,
+  name: undefined,
+  email: undefined,
 };
 
 export const userSlice = createSlice({

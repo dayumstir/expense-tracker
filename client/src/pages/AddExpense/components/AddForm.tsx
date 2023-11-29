@@ -4,7 +4,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 
-const categories = [
+const CATEGORIES = [
   "Food",
   "Travel",
   "Entertainment",
@@ -15,7 +15,9 @@ const categories = [
   "Others",
 ];
 
-export default function AddForm({ closeDrawer }: {closeDrawer: () => void}) {
+const CURRENCIES = ["SGD", "MYR", "AUD", "KRW"];
+
+export default function AddForm({ closeDrawer }: { closeDrawer: () => void }) {
   const [currency, setCurrency] = useState("SGD");
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState<Date>();
@@ -29,7 +31,7 @@ export default function AddForm({ closeDrawer }: {closeDrawer: () => void}) {
     if (currExpense.id) {
       setCurrency(currExpense.currency!);
       setAmount(String(currExpense.amount));
-      setDate(currExpense.date!);
+      setDate(currExpense.date);
       setTitle(currExpense.title!);
       setSelectedCategory(currExpense.category!);
       setType("Update");
@@ -111,10 +113,9 @@ export default function AddForm({ closeDrawer }: {closeDrawer: () => void}) {
               value={currency}
               onChange={handleCurrencyChange}
             >
-              <option>SGD</option>
-              <option>MYR</option>
-              <option>AUD</option>
-              <option>KRW</option>
+              {CURRENCIES.map((c) => (
+                <option>{c}</option>
+              ))}
             </select>
 
             <input
@@ -157,7 +158,7 @@ export default function AddForm({ closeDrawer }: {closeDrawer: () => void}) {
             <span className="label-text">Category</span>
           </label>
           <div className="flex flex-wrap gap-2">
-            {categories.map((category) => {
+            {CATEGORIES.map((category) => {
               return (
                 <input
                   key={category}

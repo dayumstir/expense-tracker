@@ -2,21 +2,21 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 export type Expense = {
-  id: number | null;
-  currency: string | null;
-  amount: number | null;
-  title: string | null;
-  date: Date | null;
-  category: string | null;
+  id: number | undefined;
+  currency: string | undefined;
+  amount: number | undefined;
+  title: string | undefined;
+  date: Date | undefined;
+  category: string | undefined;
 };
 
 const initialState: Expense = {
-  id: null,
-  currency: null,
-  amount: null,
-  title: null,
-  date: null,
-  category: null,
+  id: undefined,
+  currency: undefined,
+  amount: undefined,
+  title: undefined,
+  date: undefined,
+  category: undefined,
 };
 
 export const expenseSlice = createSlice({

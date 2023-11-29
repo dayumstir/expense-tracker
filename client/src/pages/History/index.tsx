@@ -7,6 +7,7 @@ import Tabs from "./components/Tabs";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { setExpense } from "../../redux/expenseSlice";
+import { formatAmount } from "../../utils";
 
 export default function History() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -41,9 +42,10 @@ export default function History() {
     return date.month() === month && date.year() === year;
   });
 
-  const totalSpending = expensesOfMonth
-    .reduce((total, expense) => total + Number(expense.amount), 0)
-    .toFixed(2);
+  const totalSpending = expensesOfMonth.reduce(
+    (total, expense) => total + Number(expense.amount),
+    0,
+  );
 
   const uniqueDates = [
     ...new Set(
@@ -55,11 +57,6 @@ export default function History() {
 
   const handleEditExpense = (e: Expense) => {
     dispatch(setExpense(e));
-  };
-
-  const formatDecimal = (num: number) => {
-    const numStr = num.toString();
-    return Number.isInteger(num) ? numStr : num.toFixed(2);
   };
 
   const ExpenseRow = ({ expense }: { expense: Expense }) => {
@@ -76,15 +73,14 @@ export default function History() {
           <div className="text-xs text-slate-500">{expense.category}</div>
         </div>
         <div className="ml-auto">
-          -{expense.currency !== "SGD" && expense.currency}
-          {"$" + formatDecimal(Number(expense.amount))}
+          -{formatAmount(Number(expense.amount), expense.currency)}
         </div>
       </div>
     );
   };
 
   const ExpenseBlock = ({ date }: { date: dayjs.Dayjs }) => {
-    const expensesWithMatchingDate = expensesOfMonth.filter((e) => {
+    const expensesWithSameDate = expensesOfMonth.filter((e) => {
       const expenseDate = dayjs(e.date);
       return date.isSame(expenseDate, "day");
     });
@@ -95,7 +91,7 @@ export default function History() {
           {date.format("DD MMMM")}
         </div>
         <div className="join join-vertical w-full">
-          {expensesWithMatchingDate.map((expense) => {
+          {expensesWithSameDate.map((expense) => {
             return <ExpenseRow expense={expense} key={expense.id} />;
           })}
         </div>
@@ -116,7 +112,7 @@ export default function History() {
           you spent a total of
         </div>
         <div className="text-2xl font-bold text-secondary">
-          {"$" + totalSpending}
+          {formatAmount(totalSpending)}
         </div>
         {/* TODO: pie chart with category breakdown */}
       </div>
