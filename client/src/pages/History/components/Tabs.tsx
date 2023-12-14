@@ -1,12 +1,5 @@
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
-type TabsProps = {
-  month: number;
-  setMonth: Dispatch<SetStateAction<number>>;
-  year: number;
-  setYear: Dispatch<SetStateAction<number>>;
-};
-
 const MONTHS = [
   "January",
   "February",
@@ -28,6 +21,13 @@ const YEARS = Array.from(
   { length: endYear - startYear + 1 },
   (_, index) => startYear + index,
 );
+
+type TabsProps = {
+  month: number;
+  setMonth: Dispatch<SetStateAction<number>>;
+  year: number;
+  setYear: Dispatch<SetStateAction<number>>;
+};
 
 export default function Tabs({ month, setMonth, year, setYear }: TabsProps) {
   const handlePrevMonth = () => {

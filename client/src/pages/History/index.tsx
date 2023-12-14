@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import dayjs from "dayjs";
-import { Expense } from "../../redux/expenseSlice";
+import { Expense, setExpense } from "../../redux/expenseSlice";
 import ExpenseIcon from "./components/ExpenseIcon";
 import Tabs from "./components/Tabs";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { setExpense } from "../../redux/expenseSlice";
 import { formatAmount } from "../../utils";
+import PieChart from "./components/PieChart";
 
 export default function History() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -18,7 +18,7 @@ export default function History() {
   const currExpense = useSelector((state: RootState) => state.expense);
   const dispatch = useDispatch();
 
-  const fetchData = async () => {
+  const fetchUserExpenses = async () => {
     try {
       const response = await axios.get(
         `http://localhost:8080/expenses/${userId}`,
@@ -30,11 +30,11 @@ export default function History() {
   };
 
   useEffect(() => {
-    fetchData();
+    fetchUserExpenses();
   }, []);
 
   useEffect(() => {
-    fetchData();
+    fetchUserExpenses();
   }, [currExpense]);
 
   const expensesOfMonth = expenses.filter((expense) => {
@@ -54,6 +54,19 @@ export default function History() {
       ),
     ),
   ];
+
+  const categoryTotals: { [category: string]: number } = {};
+  expensesOfMonth.forEach((expense) => {
+    const { category, amount } = expense;
+
+    if (category && amount) {
+      if (categoryTotals[category] !== undefined) {
+        categoryTotals[category] += Number(amount);
+      } else {
+        categoryTotals[category] = Number(amount);
+      }
+    }
+  });
 
   const handleEditExpense = (e: Expense) => {
     dispatch(setExpense(e));
@@ -91,9 +104,9 @@ export default function History() {
           {date.format("DD MMMM")}
         </div>
         <div className="join join-vertical w-full">
-          {expensesWithSameDate.map((expense) => {
-            return <ExpenseRow expense={expense} key={expense.id} />;
-          })}
+          {expensesWithSameDate.map((expense) => (
+            <ExpenseRow expense={expense} key={expense.id} />
+          ))}
         </div>
       </div>
     );
@@ -102,11 +115,13 @@ export default function History() {
   return (
     <div className="p-8">
       <h1 className="text-3xl font-bold">History</h1>
-      <Tabs month={month} setMonth={setMonth} year={year} setYear={setYear} />
+      <div className="pt-4">
+        <Tabs month={month} setMonth={setMonth} year={year} setYear={setYear} />
+      </div>
       <div className="py-4">
         <div>
           In{" "}
-          <span className="font-semibold">
+          <span className="font-bold">
             {dayjs().month(month).format("MMMM")}
           </span>{" "}
           you spent a total of
@@ -115,10 +130,13 @@ export default function History() {
           {formatAmount(totalSpending)}
         </div>
         {/* TODO: pie chart with category breakdown */}
+        <div className="h-64 w-screen -ml-8">
+          <PieChart categoryTotals={categoryTotals} />
+        </div>
       </div>
-      {uniqueDates.map((uniqueDate) => {
-        return <ExpenseBlock date={dayjs(uniqueDate)} key={uniqueDate} />;
-      })}
+      {uniqueDates.map((uniqueDate) => (
+        <ExpenseBlock date={dayjs(uniqueDate)} key={uniqueDate} />
+      ))}
     </div>
   );
 }

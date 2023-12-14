@@ -82,28 +82,26 @@ export default function Login() {
         className="flex w-full max-w-xs flex-col items-center justify-center"
         onSubmit={handleSubmit}
       >
-        {fields.map((field) => {
-          return (
-            <div className="form-control w-full max-w-xs" key={field}>
-              <label className="label">
-                <span className="label-text">{field}</span>
-              </label>
-              <input
-                type={field === "Password" ? "password" : "text"}
-                placeholder={field}
-                className={`input input-bordered w-full max-w-xs placeholder-white placeholder-opacity-30 ${
-                  errors[field.toLowerCase()] && "input-error"
-                }`}
-                onChange={handleChange}
-              />
-              {errors[field.toLowerCase()] && (
-                <p className="p-1 text-sm font-extralight text-error">
-                  {errors[field.toLowerCase()]}
-                </p>
-              )}
-            </div>
-          );
-        })}
+        {fields.map((field) => (
+          <div className="form-control w-full max-w-xs" key={field}>
+            <label className="label">
+              <span className="label-text">{field}</span>
+            </label>
+            <input
+              type={field === "Password" ? "password" : "text"}
+              placeholder={field}
+              className={`input input-bordered w-full max-w-xs placeholder-white placeholder-opacity-30 ${
+                errors[field.toLowerCase()] && "input-error"
+              }`}
+              onChange={handleChange}
+            />
+            {errors[field.toLowerCase()] && (
+              <p className="p-1 text-sm font-extralight text-error">
+                {errors[field.toLowerCase()]}
+              </p>
+            )}
+          </div>
+        ))}
         <button
           type="submit"
           className="btn btn-accent mt-6 w-full normal-case"

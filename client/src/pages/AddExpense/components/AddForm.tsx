@@ -1,21 +1,9 @@
 import { useState, ChangeEvent, FormEvent, useEffect } from "react";
-import Calendar from "./Calendar";
+import Calendar from "../Calendar";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
-
-const CATEGORIES = [
-  "Food",
-  "Travel",
-  "Entertainment",
-  "Fashion",
-  "Sports",
-  "Healthcare",
-  "Gifts",
-  "Others",
-];
-
-const CURRENCIES = ["SGD", "MYR", "AUD", "KRW"];
+import { CATEGORIES, CURRENCIES } from "../../../utils";
 
 export default function AddForm({ closeDrawer }: { closeDrawer: () => void }) {
   const [currency, setCurrency] = useState("SGD");
@@ -37,7 +25,6 @@ export default function AddForm({ closeDrawer }: { closeDrawer: () => void }) {
       setType("Update");
     } else {
       resetFields();
-      setType("Add");
     }
   }, [currExpense]);
 
@@ -94,6 +81,7 @@ export default function AddForm({ closeDrawer }: { closeDrawer: () => void }) {
     setDate(new Date());
     setTitle("");
     setSelectedCategory("");
+    setType("Add");
   };
 
   const buttonDisabled =
@@ -158,20 +146,18 @@ export default function AddForm({ closeDrawer }: { closeDrawer: () => void }) {
             <span className="label-text">Category</span>
           </label>
           <div className="flex flex-wrap gap-2">
-            {CATEGORIES.map((category) => {
-              return (
-                <input
-                  key={category}
-                  className="btn normal-case"
-                  type="radio"
-                  name="category"
-                  checked={category === selectedCategory}
-                  value={category}
-                  aria-label={category}
-                  onChange={handleCategoryChange}
-                />
-              );
-            })}
+            {CATEGORIES.map((category) => (
+              <input
+                key={category}
+                className="btn normal-case"
+                type="radio"
+                name="category"
+                checked={category === selectedCategory}
+                value={category}
+                aria-label={category}
+                onChange={handleCategoryChange}
+              />
+            ))}
           </div>
         </div>
 
