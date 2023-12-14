@@ -46,7 +46,7 @@ const getExpensesByUser = async (req: Request, res: Response) => {
         userId: userId,
       },
       orderBy: {
-        date: 'desc',
+        date: "desc",
       },
       select: {
         id: true,
@@ -71,7 +71,7 @@ const getExpensesByUser = async (req: Request, res: Response) => {
 
 const updateExpense = async (req: Request, res: Response) => {
   try {
-    const expenseId = parseInt(req.params.expenseId);
+    const expenseId = Number(req.params.expenseId);
     await prisma.expense.findUnique({
       where: {
         id: expenseId,
@@ -100,4 +100,23 @@ const updateExpense = async (req: Request, res: Response) => {
   }
 };
 
-export { createExpense, getExpensesByUser, updateExpense };
+const deleteExpense = async (req: Request, res: Response) => {
+  try {
+    const expenseId = Number(req.params.expenseId);
+    const expense = await prisma.expense.delete({
+      where: {
+        id: expenseId,
+      },
+    });
+    res.json(expense);
+  } catch (err) {
+    if (err instanceof Error) {
+      res.status(404).json({ error: err.message });
+      console.error(err.message);
+    } else {
+      console.log("Unexpected error", err);
+    }
+  }
+};
+
+export { createExpense, getExpensesByUser, updateExpense, deleteExpense };

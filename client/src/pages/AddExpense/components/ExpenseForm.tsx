@@ -1,17 +1,22 @@
 import { useState, ChangeEvent, FormEvent, useEffect } from "react";
-import Calendar from "../Calendar";
+import Calendar from "./Calendar";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { CATEGORIES, CURRENCIES } from "../../../utils";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
-export default function AddForm({ closeDrawer }: { closeDrawer: () => void }) {
+export default function ExpenseForm({
+  closeDrawer,
+}: {
+  closeDrawer: () => void;
+}) {
   const [currency, setCurrency] = useState("SGD");
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState<Date>();
   const [title, setTitle] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [type, setType] = useState("Add");
+  const [type, setType] = useState("Save");
   const userId = useSelector((state: RootState) => state.user.id);
   const currExpense = useSelector((state: RootState) => state.expense);
 
@@ -61,7 +66,7 @@ export default function AddForm({ closeDrawer }: { closeDrawer: () => void }) {
       category: selectedCategory,
     };
     try {
-      if (type === "Add") {
+      if (type === "Save") {
         await axios.post(`http://localhost:8080/expenses/${userId}`, expense);
       } else if (type === "Update") {
         await axios.put(
@@ -71,7 +76,18 @@ export default function AddForm({ closeDrawer }: { closeDrawer: () => void }) {
       }
       closeDrawer();
     } catch (error) {
-      console.error(`Expense ${type === "Add" ? "creation" : "update"} failed`);
+      console.error(
+        `Expense ${type === "Save" ? "creation" : "update"} failed`,
+      );
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:8080/expenses/${currExpense.id}`);
+      closeDrawer();
+    } catch (error) {
+      console.error(`Expense deletion failed`);
     }
   };
 
@@ -81,7 +97,7 @@ export default function AddForm({ closeDrawer }: { closeDrawer: () => void }) {
     setDate(new Date());
     setTitle("");
     setSelectedCategory("");
-    setType("Add");
+    setType("Save");
   };
 
   const buttonDisabled =
@@ -161,14 +177,28 @@ export default function AddForm({ closeDrawer }: { closeDrawer: () => void }) {
           </div>
         </div>
 
-        <button
-          type="submit"
-          className={`btn btn-accent btn-block mt-6 max-w-xs ${
-            buttonDisabled ? "pointer-events-none opacity-30" : ""
-          }`}
-        >
-          {type === "Add" ? "Save" : "Update"}
-        </button>
+        <div className="mt-6 flex max-w-xs gap-2">
+          <button
+            type="submit"
+            className={`btn btn-accent flex-grow ${
+              buttonDisabled ? "pointer-events-none opacity-30" : ""
+            }`}
+          >
+            {type}
+          </button>
+          {type === "Update" && (
+            <button
+              type="button"
+              className="group btn hover:bg-error active:bg-error"
+              onClick={handleDelete}
+            >
+              <RiDeleteBin6Line
+                className="text-error group-hover:text-base-300 group-active:text-base-300"
+                size={16}
+              />
+            </button>
+          )}
+        </div>
       </form>
     </div>
   );

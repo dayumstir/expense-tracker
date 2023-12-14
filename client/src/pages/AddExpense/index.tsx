@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { RxPlus, RxCross2 } from "react-icons/rx";
 import { useLocation } from "react-router-dom";
-import AddForm from "./components/AddForm";
+import AddForm from "./components/ExpenseForm";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { resetExpense } from "../../redux/expenseSlice";

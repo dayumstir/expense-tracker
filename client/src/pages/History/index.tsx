@@ -130,7 +130,7 @@ export default function History() {
           {formatAmount(totalSpending)}
         </div>
         {/* TODO: pie chart with category breakdown */}
-        <div className="h-64 w-screen -ml-8">
+        <div className="-ml-8 h-64 w-screen">
           <PieChart categoryTotals={categoryTotals} />
         </div>
       </div>
