@@ -22,12 +22,13 @@ export default function PieChart({
       margin={{ top: 40, right: 0, bottom: 40, left: 0 }}
       startAngle={-180}
       innerRadius={0.5}
-      padAngle={0.5}
+      padAngle={1}
+      cornerRadius={4}
       activeOuterRadiusOffset={8}
       borderWidth={1}
       borderColor={{
         from: "color",
-        modifiers: [["darker", 1]],
+        modifiers: [["darker", 2]],
       }}
       arcLinkLabelsSkipAngle={5}
       arcLinkLabelsTextColor="#A6ADBA"
@@ -36,7 +37,7 @@ export default function PieChart({
       arcLinkLabelsDiagonalLength={12}
       arcLinkLabelsStraightLength={18}
       arcLinkLabelsTextOffset={3}
-      arcLabelsSkipAngle={20}
+      arcLabelsSkipAngle={30}
     />
   );
 }

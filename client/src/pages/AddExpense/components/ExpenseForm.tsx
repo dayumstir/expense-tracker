@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { CATEGORIES, CURRENCIES } from "../../../utils";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import useToast from "../../../hooks/useToast";
 
 export default function ExpenseForm({
   closeDrawer,
@@ -17,8 +18,10 @@ export default function ExpenseForm({
   const [title, setTitle] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [type, setType] = useState("Save");
+
   const userId = useSelector((state: RootState) => state.user.id);
   const currExpense = useSelector((state: RootState) => state.expense);
+  const toast = useToast();
 
   useEffect(() => {
     if (currExpense.id) {
@@ -41,9 +44,7 @@ export default function ExpenseForm({
   const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
     const num = e.target.value;
     const regex = /^\d{0,8}\.{0,1}\d{0,2}$/;
-    if (regex.test(num)) {
-      setAmount(num);
-    }
+    regex.test(num) && setAmount(num);
   };
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -68,17 +69,29 @@ export default function ExpenseForm({
     try {
       if (type === "Save") {
         await axios.post(`http://localhost:8080/expenses/${userId}`, expense);
+        toast({
+          type: "success",
+          message: "Expense saved successfully!",
+        });
       } else if (type === "Update") {
         await axios.put(
           `http://localhost:8080/expenses/${currExpense.id}`,
           expense,
         );
+        toast({
+          type: "success",
+          message: "Expense updated successfully!",
+        });
       }
       closeDrawer();
     } catch (error) {
       console.error(
         `Expense ${type === "Save" ? "creation" : "update"} failed`,
       );
+      toast({
+        type: "error",
+        message: "Error: Something went wrong!",
+      });
     }
   };
 
