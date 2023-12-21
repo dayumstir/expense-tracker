@@ -9,7 +9,8 @@ export const CATEGORIES = [
   "Others",
 ];
 
-export const CURRENCIES = ["SGD", "MYR", "AUD", "KRW"];
+// export const CURRENCIES = ["SGD", "MYR", "AUD", "KRW"];
+export const CURRENCIES = ["SGD"];
 
 export const formatAmount = (amount: number, currency: string = "SGD") => {
   const isInteger = Number.isInteger(amount);

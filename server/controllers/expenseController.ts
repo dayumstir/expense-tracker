@@ -1,9 +1,10 @@
 import prisma from "../db";
 import { Request, Response } from "express";
+import dayjs from "dayjs";
 
 const createExpense = async (req: Request, res: Response) => {
   try {
-    const userId = parseInt(req.params.userId);
+    const userId = Number(req.params.userId);
     const { currency, amount, title, date, category } = req.body;
 
     const userExists = await prisma.user.findUnique({
@@ -40,7 +41,7 @@ const createExpense = async (req: Request, res: Response) => {
 
 const getExpensesByUser = async (req: Request, res: Response) => {
   try {
-    const userId = parseInt(req.params.userId);
+    const userId = Number(req.params.userId);
     const expenses = await prisma.expense.findMany({
       where: {
         userId: userId,
@@ -119,4 +120,63 @@ const deleteExpense = async (req: Request, res: Response) => {
   }
 };
 
-export { createExpense, getExpensesByUser, updateExpense, deleteExpense };
+const getLastXMonthsExpensesTotalByMonth = async (
+  req: Request,
+  res: Response
+) => {
+  const userId = Number(req.params.userId);
+  const numOfMonthsInThePast = Number(req.params.numOfMonthsInThePast);
+
+  const lastDayOfThisMonth = dayjs().endOf("month");
+  const firstDayOfXMonthsAgo = dayjs()
+    .subtract(numOfMonthsInThePast, "months")
+    .startOf("month");
+
+  const expenses = await prisma.expense.findMany({
+    where: {
+      userId: userId,
+      date: {
+        gte: firstDayOfXMonthsAgo.toISOString(),
+        lte: lastDayOfThisMonth.toISOString(),
+      },
+    },
+    orderBy: {
+      date: "desc",
+    },
+    select: {
+      amount: true,
+      date: true,
+    },
+  });
+
+  type monthlyTotal = {
+    month: string;
+    amount: number;
+  };
+
+  let expensesTotalByMonth: monthlyTotal[] = [];
+  expenses.forEach((expense) => {
+    const monthStr = dayjs(expense.date).format("MMM");
+    const expensesTotal = expensesTotalByMonth.find(
+      (monthlyTotal) => monthlyTotal.month === monthStr
+    );
+    if (expensesTotal) {
+      expensesTotal.amount += Number(expense.amount);
+    } else {
+      expensesTotalByMonth.push({
+        month: monthStr,
+        amount: Number(expense.amount),
+      });
+    }
+  });
+
+  res.json(expensesTotalByMonth);
+};
+
+export {
+  createExpense,
+  getExpensesByUser,
+  updateExpense,
+  deleteExpense,
+  getLastXMonthsExpensesTotalByMonth,
+};

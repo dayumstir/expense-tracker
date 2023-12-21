@@ -113,7 +113,7 @@ export default function History() {
   };
 
   return (
-    <div className="p-8">
+    <div>
       <h1 className="text-3xl font-bold">History</h1>
       <div className="pt-4">
         <Tabs month={month} setMonth={setMonth} year={year} setYear={setYear} />
@@ -129,7 +129,6 @@ export default function History() {
         <div className="text-2xl font-bold text-secondary">
           {formatAmount(totalSpending)}
         </div>
-        {/* TODO: pie chart with category breakdown */}
         <div className="-ml-8 h-64 w-screen">
           <PieChart categoryTotals={categoryTotals} />
         </div>

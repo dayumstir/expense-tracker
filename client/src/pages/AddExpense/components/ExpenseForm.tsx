@@ -98,6 +98,10 @@ export default function ExpenseForm({
   const handleDelete = async () => {
     try {
       await axios.delete(`http://localhost:8080/expenses/${currExpense.id}`);
+      toast({
+        type: "success",
+        message: "Expense deleted successfully!",
+      });
       closeDrawer();
     } catch (error) {
       console.error(`Expense deletion failed`);

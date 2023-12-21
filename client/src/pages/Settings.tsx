@@ -8,7 +8,7 @@ export default function Settings() {
   };
 
   return (
-    <div className="p-8">
+    <div>
       <h1 className="text-3xl font-bold">Settings</h1>
       <button className="btn btn-accent m-10" onClick={handleLogout}>
         Logout
