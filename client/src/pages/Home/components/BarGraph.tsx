@@ -1,5 +1,4 @@
 import { ResponsiveBar } from "@nivo/bar";
-import { formatAmount } from "../../../utils";
 
 type monthlyTotal = {
   month: string;
@@ -29,12 +28,12 @@ export default function BarGraph({ data }: { data: monthlyTotal[] }) {
           },
         },
       }}
-      margin={{ top: 50, right: 0, bottom: 50, left: 0 }}
+      margin={{ top: 50, right: 10, bottom: 50, left: 35 }}
       padding={0.2}
       borderRadius={4}
-      borderColor={{
-        from: "color",
-        modifiers: [["darker", 2]],
+      axisLeft={{
+        tickSize: 0,
+        tickPadding: 5,
       }}
       axisBottom={{
         tickSize: 5,
@@ -47,6 +46,7 @@ export default function BarGraph({ data }: { data: monthlyTotal[] }) {
         from: "color",
         modifiers: [["darker", 2]],
       }}
+      isInteractive={false}
       ariaLabel="Monthly expenditure bar graph"
     />
   );
