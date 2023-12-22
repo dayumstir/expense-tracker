@@ -8,7 +8,7 @@ type monthlyTotal = {
 export default function BarGraph({ data }: { data: monthlyTotal[] }) {
   return (
     <ResponsiveBar
-      data={data}
+      data={data.slice().reverse()}
       keys={["amount"]}
       indexBy="month"
       colors={"#21B2A6"}
@@ -16,7 +16,7 @@ export default function BarGraph({ data }: { data: monthlyTotal[] }) {
         grid: {
           line: {
             stroke: "#A6ADBA",
-            strokeWidth: 0.3,
+            strokeWidth: 0.2,
           },
         },
         axis: {
@@ -34,10 +34,11 @@ export default function BarGraph({ data }: { data: monthlyTotal[] }) {
       axisLeft={{
         tickSize: 0,
         tickPadding: 5,
+        tickValues: 5,
       }}
       axisBottom={{
-        tickSize: 5,
-        tickPadding: 5,
+        tickSize: 0,
+        tickPadding: 8,
       }}
       valueFormat={">-$.0~f"}
       labelSkipWidth={12}
