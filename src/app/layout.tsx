@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { ThemeProvider } from "../components/theme-provider";
-import Navbar from "~/components/navbar";
+import { Navbar } from "~/components/Navbar";
 import { Darkmode } from "~/components/Darkmode";
 
 const inter = Inter({
