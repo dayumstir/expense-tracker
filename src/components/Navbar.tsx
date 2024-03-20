@@ -5,17 +5,16 @@ import { usePathname } from "next/navigation";
 import {
   HomeIcon,
   DocumentTextIcon,
-  PlusIcon,
   ChartPieIcon,
   Cog6ToothIcon,
 } from "@heroicons/react/24/solid";
-import { Button } from "./ui/button";
+import { ExpenseDrawer } from "./ExpenseDrawer";
 
 export function Navbar() {
   const pathname = usePathname();
 
-  const isNotSelected = (link: string) => {
-    return pathname !== link;
+  const isNotSelected = (url: string) => {
+    return pathname !== url;
   };
 
   return (
@@ -25,17 +24,13 @@ export function Navbar() {
       </Link>
       <Link href="/expenses">
         <DocumentTextIcon
-          className={`h-6 ${isNotSelected("/settings") && "opacity-40"}`}
+          className={`h-6 ${isNotSelected("/expenses") && "opacity-40"}`}
         />
       </Link>
-      <Link href="/add-expense">
-        <Button size="sm" className="bg-white">
-          <PlusIcon className={`h-6 text-black`} />
-        </Button>
-      </Link>
-      <Link href="/analysis">
+      <ExpenseDrawer />
+      <Link href="/analytics">
         <ChartPieIcon
-          className={`h-6 ${isNotSelected("/settings") && "opacity-40"}`}
+          className={`h-6 ${isNotSelected("/analytics") && "opacity-40"}`}
         />
       </Link>
       <Link href="/settings">
