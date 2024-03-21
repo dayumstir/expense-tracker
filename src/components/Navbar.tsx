@@ -8,7 +8,7 @@ import {
   ChartPieIcon,
   Cog6ToothIcon,
 } from "@heroicons/react/24/solid";
-import { ExpenseDrawer } from "./ExpenseDrawer";
+import { ExpenseDrawer } from "./add-expense/ExpenseDrawer";
 
 export function Navbar() {
   const pathname = usePathname();
