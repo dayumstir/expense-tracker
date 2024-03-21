@@ -17,6 +17,12 @@ export function Navbar() {
     return pathname !== url;
   };
 
+  const validPaths = ["/", "/expenses", "/analytics", "/settings"];
+
+  if (!validPaths.includes(pathname)) {
+    return;
+  }
+
   return (
     <div className="fixed bottom-0 flex h-16 w-full items-center justify-evenly bg-slate-800">
       <Link href="/">

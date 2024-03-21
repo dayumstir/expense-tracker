@@ -13,7 +13,13 @@ import { z } from "zod";
 import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
 import { Calendar } from "~/components/ui/calendar";
-import { Form, FormControl, FormField, FormItem } from "~/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  useFormField,
+} from "~/components/ui/form";
 import {
   Popover,
   PopoverContent,
@@ -28,198 +34,216 @@ import {
 } from "~/components/ui/select";
 import { toast } from "sonner";
 import { Input } from "../ui/input";
-import { useState } from "react";
 
-const FormSchema = z.object({
-  title: z.string().min(1),
-  amount: z.coerce.number().gt(0),
-  date: z.date(),
-  category: z.string(),
-});
+type Props = {
+  closeDrawer: () => void;
+};
 
 const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0"];
 
-export function ExpenseForm() {
+const FormSchema = z.object({
+  title: z.string().min(1),
+  amount: z
+    .string()
+    .min(1)
+    .regex(/^(?!0$).+$/),
+  date: z.date(),
+  category: z.string().min(1),
+});
+
+export function ExpenseForm(props: Props) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       title: "",
-      amount: 0,
+      amount: "0",
       date: new Date(),
       category: "",
     },
   });
 
-  const [amount, setAmount] = useState("0");
-
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast("You submitted the following values:", {
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
+    props.closeDrawer();
+
+    toast.success("Your expense has been created succesfully!", {
+      duration: 2500,
     });
   }
 
-  const NumberButton = (
-    num: string,
+  const handleKeypadPress = (
+    key: string,
     field: ControllerRenderProps<
       {
         title: string;
-        amount: number;
+        amount: string;
         date: Date;
         category: string;
       },
       "amount"
     >,
   ) => {
-    return (
-      <Button
-        type="button"
-        className="bg-slate-800 py-8 text-2xl text-slate-300 hover:bg-slate-800 active:scale-95 active:opacity-80"
-        // onClick={() => handleKeypadPress(num)}
-        onClick={() => field.onChange}
-      >
-        {num}
-      </Button>
-    );
-  };
-
-  const handleKeypadPress = (num: string) => {
-    if (amount.length > 7) {
+    if (field.value.length > 7) {
       return;
     }
-    if (num === "." && amount.includes(".")) {
+    if (key === "." && field.value.includes(".")) {
       return;
     }
     // Check if there are 2 or more digits after decimal place
     const regex = /\.\d{2}\b/;
-    if (amount.includes(".") && regex.test(amount)) {
+    if (field.value.includes(".") && regex.test(field.value)) {
       return;
     }
 
-    if (amount === "0") {
-      setAmount(num);
+    if (field.value === "0") {
+      field.onChange(key);
     } else {
-      setAmount((amt) => amt + num);
+      field.onChange(field.value + key);
     }
   };
 
-  const handleBackspace = () => {
-    if (amount.length === 1) {
-      setAmount("0");
+  const handleBackspace = (
+    field: ControllerRenderProps<
+      {
+        title: string;
+        amount: string;
+        date: Date;
+        category: string;
+      },
+      "amount"
+    >,
+  ) => {
+    if (parseInt(field.value) < 10) {
+      field.onChange("0");
     } else {
-      setAmount((amt) => amt.slice(0, -1));
+      field.onChange(field.value.slice(0, -1));
     }
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  className={`${false && "ring-destructive ring-2 ring-offset-2"}`}
-                  placeholder="Title of expense"
-                  {...field}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <div className="flex w-full justify-between">
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="relative top-44 flex flex-col gap-2">
           <FormField
             control={form.control}
-            name="date"
+            name="title"
             render={({ field }) => (
-              <FormItem className="mr-2 flex-grow">
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-full pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground",
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                    />
-                  </PopoverContent>
-                </Popover>
+              <FormItem className="w-full">
+                <FormControl>
+                  <Input
+                    className={`${useFormField().error?.message ? "animate-shake ring-destructive ring-2 ring-offset-1" : ""}
+											`}
+                    placeholder="Title of expense"
+                    {...field}
+                  />
+                </FormControl>
+                {}
               </FormItem>
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="category"
-            render={({ field }) => (
-              <FormItem className="flex">
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Category" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="Food">Food</SelectItem>
-                    <SelectItem value="Entertainment">Entertainment</SelectItem>
-                    <SelectItem value="Transport">Transport</SelectItem>
-                    <SelectItem value="Gifts">Gifts</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FormItem>
-            )}
-          />
+          <div className="flex justify-between">
+            <FormField
+              name="date"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="mr-2 flex-grow">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-full pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground",
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              name="category"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="flex">
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger
+                        className={`${useFormField().error?.message ? "animate-shake ring-destructive ring-2 ring-offset-1" : ""}`}
+                      >
+                        <SelectValue placeholder="Category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent align="end">
+                      <SelectItem value="Food">Food</SelectItem>
+                      <SelectItem value="Entertainment">
+                        Entertainment
+                      </SelectItem>
+                      <SelectItem value="Transport">Transport</SelectItem>
+                      <SelectItem value="Gifts">Gifts</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
 
         <FormField
-          control={form.control}
           name="amount"
+          control={form.control}
           render={({ field }) => (
             <FormItem>
-              <input
-                className="w-full bg-transparent py-6 text-center text-5xl font-bold"
-                {...field}
-                disabled
-              />
-              <Button
-                variant="ghost"
-                size="icon"
-                type="button"
-                className="absolute right-9 hover:bg-transparent active:scale-95 active:opacity-80"
-              >
-                <BackspaceIcon
-                  className="h-6 opacity-40"
-                  // onClick={() => handleBackspace()}
-                />
-              </Button>
+              <div className="relative bottom-24 flex items-center">
+                <FormControl>
+                  <input
+                    className={`${useFormField().error?.message ? "animate-shake text-destructive" : ""} 
+											w-full bg-transparent py-16 text-center text-5xl font-bold`}
+                    {...field}
+                    disabled
+                  />
+                </FormControl>
+                <Button
+                  variant="ghost"
+                  type="button"
+                  className="absolute right-0 hover:bg-transparent active:scale-95 active:opacity-80"
+                >
+                  <BackspaceIcon
+                    className="h-6 opacity-40"
+                    onClick={() => handleBackspace(field)}
+                  />
+                </Button>
+              </div>
               <div className="grid w-full max-w-sm grid-cols-3 gap-4">
-                {KEYS.map((num: string) => {
-                  return NumberButton(num, field);
-                })}
+                {KEYS.map((key: string) => (
+                  <Button
+                    type="button"
+                    className="bg-slate-800 py-8 text-2xl text-slate-300 hover:bg-slate-800 active:scale-95 active:opacity-80"
+                    onClick={() => handleKeypadPress(key, field)}
+                  >
+                    {key}
+                  </Button>
+                ))}
                 <Button className="bg-primary py-8 text-slate-300 active:scale-95 active:opacity-80">
                   <CheckIcon className="h-8" />
                 </Button>

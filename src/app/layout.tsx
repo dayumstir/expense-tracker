@@ -5,7 +5,6 @@ import { Inter } from "next/font/google";
 import { TRPCReactProvider } from "~/trpc/react";
 import { ThemeProvider } from "../components/theme-provider";
 import { Navbar } from "~/components/Navbar";
-import { Darkmode } from "~/components/Darkmode";
 import { Toaster } from "~/components/ui/sonner";
 import type { Viewport } from "next";
 
@@ -25,8 +24,6 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  // Also supported by less commonly used
-  // interactiveWidget: 'resizes-visual',
 };
 
 export default function RootLayout({
@@ -44,9 +41,8 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Darkmode />
             <Navbar />
-            <Toaster />
+            <Toaster position="top-center" richColors />
             {children}
           </ThemeProvider>
         </TRPCReactProvider>

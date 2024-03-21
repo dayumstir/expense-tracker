@@ -1,6 +1,12 @@
 import Link from "next/link";
+import { Darkmode } from "~/components/Darkmode";
 import { api } from "~/trpc/server";
 
 export default async function Settings() {
-  return <p>hello world</p>;
+  return (
+    <div>
+      <p>hello world</p>
+      <Darkmode />
+    </div>
+  );
 }

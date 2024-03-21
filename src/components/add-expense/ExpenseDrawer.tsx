@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Drawer,
   DrawerContent,
@@ -7,31 +6,32 @@ import {
   DrawerTrigger,
 } from "~/components/ui/drawer";
 import { Button } from "~/components/ui/button";
-import { PlusIcon, BackspaceIcon } from "@heroicons/react/24/solid";
+import { PlusIcon } from "@heroicons/react/24/solid";
 import { ExpenseForm } from "./ExpenseForm";
+import { useEffect, useState } from "react";
 
 export function ExpenseDrawer() {
-  const resetFields = () => {
-    // setAmount("0");
+  const [open, setOpen] = useState(false);
+
+  const closeDrawer = () => {
+    setOpen(false);
   };
 
   return (
-    <Drawer>
+    <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button
-          size="sm"
-          className="bg-white hover:bg-white"
-          onClick={() => resetFields()}
-        >
+        <Button size="sm" className="bg-white hover:bg-white">
           <PlusIcon className="h-6 text-black" />
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="p-4">
+      <DrawerContent className="px-4 pb-4">
         <div className="mx-auto w-full max-w-sm">
           <DrawerHeader>
-            <DrawerTitle>New Expense</DrawerTitle>
+            <DrawerTitle className="text-primary text-xl">
+              New Expense
+            </DrawerTitle>
           </DrawerHeader>
-          <ExpenseForm />
+          <ExpenseForm closeDrawer={closeDrawer} />
         </div>
       </DrawerContent>
     </Drawer>
