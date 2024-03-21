@@ -34,6 +34,7 @@ import {
 } from "~/components/ui/select";
 import { toast } from "sonner";
 import { Input } from "../ui/input";
+import { useState } from "react";
 
 type Props = {
   closeDrawer: () => void;
@@ -52,6 +53,8 @@ const FormSchema = z.object({
 });
 
 export function ExpenseForm(props: Props) {
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -147,7 +150,10 @@ export function ExpenseForm(props: Props) {
               control={form.control}
               render={({ field }) => (
                 <FormItem className="mr-2 flex-grow">
-                  <Popover>
+                  <Popover
+                    open={isCalendarOpen}
+                    onOpenChange={setIsCalendarOpen}
+                  >
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
@@ -158,7 +164,7 @@ export function ExpenseForm(props: Props) {
                           )}
                         >
                           {field.value ? (
-                            format(field.value, "PPP")
+                            format(field.value, "EEE, do MMMM")
                           ) : (
                             <span>Pick a date</span>
                           )}
@@ -170,7 +176,10 @@ export function ExpenseForm(props: Props) {
                       <Calendar
                         mode="single"
                         selected={field.value}
-                        onSelect={field.onChange}
+                        onSelect={(e) => {
+                          field.onChange(e);
+                          setIsCalendarOpen(false);
+                        }}
                       />
                     </PopoverContent>
                   </Popover>
