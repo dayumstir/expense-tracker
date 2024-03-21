@@ -7,19 +7,13 @@ import {
   CalendarIcon,
   CheckIcon,
 } from "@heroicons/react/24/solid";
-import { ControllerRenderProps, useForm } from "react-hook-form";
+import { ControllerRenderProps, useForm, useFormState } from "react-hook-form";
 import { z } from "zod";
 
 import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
 import { Calendar } from "~/components/ui/calendar";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  useFormField,
-} from "~/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "~/components/ui/form";
 import {
   Popover,
   PopoverContent,
@@ -65,6 +59,8 @@ export function ExpenseForm(props: Props) {
     },
   });
 
+  const { errors } = useFormState({ control: form.control });
+
   function onSubmit(data: z.infer<typeof FormSchema>) {
     props.closeDrawer();
 
@@ -97,7 +93,7 @@ export function ExpenseForm(props: Props) {
       return;
     }
 
-    if (field.value === "0") {
+    if (field.value === "0" && key !== ".") {
       field.onChange(key);
     } else {
       field.onChange(field.value + key);
@@ -115,7 +111,7 @@ export function ExpenseForm(props: Props) {
       "amount"
     >,
   ) => {
-    if (parseInt(field.value) < 10) {
+    if (field.value.length === 1) {
       field.onChange("0");
     } else {
       field.onChange(field.value.slice(0, -1));
@@ -133,7 +129,7 @@ export function ExpenseForm(props: Props) {
               <FormItem className="w-full">
                 <FormControl>
                   <Input
-                    className={`${useFormField().error?.message ? "animate-shake ring-destructive ring-2 ring-offset-1" : ""}
+                    className={`${errors.title?.message ? "animate-shake ring-destructive ring-2 ring-offset-1" : ""}
 											`}
                     placeholder="Title of expense"
                     {...field}
@@ -198,7 +194,7 @@ export function ExpenseForm(props: Props) {
                   >
                     <FormControl>
                       <SelectTrigger
-                        className={`${useFormField().error?.message ? "animate-shake ring-destructive ring-2 ring-offset-1" : ""}`}
+                        className={`${errors.category?.message ? "animate-shake ring-destructive ring-2 ring-offset-1" : ""}`}
                       >
                         <SelectValue placeholder="Category" />
                       </SelectTrigger>
@@ -226,7 +222,7 @@ export function ExpenseForm(props: Props) {
               <div className="relative bottom-24 flex items-center">
                 <FormControl>
                   <input
-                    className={`${useFormField().error?.message ? "animate-shake text-destructive" : ""} 
+                    className={`${errors.amount?.message ? "animate-shake text-destructive" : ""} 
 											w-full bg-transparent py-16 text-center text-5xl font-bold`}
                     {...field}
                     disabled
@@ -249,6 +245,7 @@ export function ExpenseForm(props: Props) {
                     type="button"
                     className="bg-slate-800 py-8 text-2xl text-slate-300 hover:bg-slate-800 active:scale-95 active:opacity-80"
                     onClick={() => handleKeypadPress(key, field)}
+                    key={key}
                   >
                     {key}
                   </Button>
