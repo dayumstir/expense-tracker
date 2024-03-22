@@ -1,6 +1,6 @@
 {
-	"name": "Expense Tracker",
-	"short_name": "Expense Tracker",
+	"name": "Penny - Expense Tracker",
+	"short_name": "Penny",
 	"icons": [
 		{
 			"src": "/icon-192x192.png",

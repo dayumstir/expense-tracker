@@ -57,6 +57,7 @@ export function ExpenseForm(props: Props) {
       date: new Date(),
       category: "",
     },
+    shouldFocusError: false,
   });
 
   const { errors } = useFormState({ control: form.control });
@@ -222,7 +223,7 @@ export function ExpenseForm(props: Props) {
               <div className="relative bottom-24 flex items-center">
                 <FormControl>
                   <input
-                    className={`${errors.amount?.message ? "animate-shake text-destructive" : ""} 
+                    className={`${errors.amount?.message ? "animate-shake text-destructive" : "text-foreground"} 
 											w-full bg-transparent py-16 text-center text-5xl font-bold`}
                     {...field}
                     disabled
@@ -243,14 +244,14 @@ export function ExpenseForm(props: Props) {
                 {KEYS.map((key: string) => (
                   <Button
                     type="button"
-                    className="bg-slate-800 py-8 text-2xl text-slate-300 hover:bg-slate-800 active:scale-95 active:opacity-80"
+                    className="bg-muted py-8 text-2xl text-muted-foreground hover:bg-muted active:scale-95 active:opacity-80"
                     onClick={() => handleKeypadPress(key, field)}
                     key={key}
                   >
                     {key}
                   </Button>
                 ))}
-                <Button className="bg-primary py-8 text-slate-300 active:scale-95 active:opacity-80">
+                <Button className="bg-primary py-8 active:scale-95 active:opacity-80">
                   <CheckIcon className="h-8" />
                 </Button>
               </div>

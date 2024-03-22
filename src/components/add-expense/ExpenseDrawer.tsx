@@ -20,8 +20,8 @@ export function ExpenseDrawer() {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button size="sm" className="bg-white hover:bg-white">
-          <PlusIcon className="h-6 text-black" />
+        <Button size="sm" className="bg-foreground hover:bg-foreground">
+          <PlusIcon className="h-6 text-background" />
         </Button>
       </DrawerTrigger>
       <DrawerContent className="px-4 pb-4">
