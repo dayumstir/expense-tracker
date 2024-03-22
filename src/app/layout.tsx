@@ -6,21 +6,56 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { ThemeProvider } from "../components/theme-provider";
 import { Navbar } from "~/components/Navbar";
 import { Toaster } from "~/components/ui/sonner";
-import type { Viewport } from "next";
+import type { Metadata, Viewport } from "next";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
 });
 
-export const metadata = {
+const APP_NAME = "Expense Tracker";
+const APP_DEFAULT_TITLE = "Expense Tracker";
+const APP_TITLE_TEMPLATE = "%s - Expense Tracker";
+const APP_DESCRIPTION = "A simple expense tracker";
+
+export const metadata: Metadata = {
+  applicationName: APP_NAME,
+  title: {
+    default: APP_DEFAULT_TITLE,
+    template: APP_TITLE_TEMPLATE,
+  },
+  description: APP_DESCRIPTION,
   manifest: "/manifest.json",
-  title: "Expense Tracker",
-  description: "A simple expense tracker",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: APP_DEFAULT_TITLE,
+    // startUpImage: [],
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  openGraph: {
+    type: "website",
+    siteName: APP_NAME,
+    title: {
+      default: APP_DEFAULT_TITLE,
+      template: APP_TITLE_TEMPLATE,
+    },
+    description: APP_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary",
+    title: {
+      default: APP_DEFAULT_TITLE,
+      template: APP_TITLE_TEMPLATE,
+    },
+    description: APP_DESCRIPTION,
+  },
 };
 
 export const viewport: Viewport = {
+  themeColor: "#FFFFFF",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
