@@ -24,7 +24,7 @@ export function ExpenseDrawer() {
           <PlusIcon className="h-6 text-background" />
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="px-4 pb-4">
+      <DrawerContent className="pb-safe-or-4 px-4">
         <div className="mx-auto w-full max-w-sm">
           <DrawerHeader>
             <DrawerTitle className="text-xl text-primary">

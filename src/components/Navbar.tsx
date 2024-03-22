@@ -24,7 +24,7 @@ export function Navbar() {
   }
 
   return (
-    <div className="pb-safe fixed bottom-0 flex w-full items-center justify-evenly bg-muted py-4">
+    <div className="pb-safe-or-4 fixed bottom-0 flex w-full items-center justify-evenly bg-muted py-4">
       <Link href="/">
         <HomeIcon
           className={`h-6 text-foreground ${isNotSelected("/") ? "opacity-40" : ""}`}
