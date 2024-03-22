@@ -14,6 +14,7 @@ const inter = Inter({
 });
 
 export const metadata = {
+  manifest: "/manifest.json",
   title: "Expense Tracker",
   description: "A simple expense tracker",
   icons: [{ rel: "icon", url: "/favicon.ico" }],

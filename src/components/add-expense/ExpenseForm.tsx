@@ -41,7 +41,7 @@ const FormSchema = z.object({
   amount: z
     .string()
     .min(1)
-    .regex(/^(?!0$).+$/),
+    .regex(/^(?!0(\.0*)?$).*$/), // Amount !== "0" || "0." || "0.0"|| "0.00"
   date: z.date(),
   category: z.string().min(1),
 });
@@ -64,7 +64,7 @@ export function ExpenseForm(props: Props) {
   function onSubmit(data: z.infer<typeof FormSchema>) {
     props.closeDrawer();
 
-    toast.success("Your expense has been created succesfully!", {
+    toast.success("Your expense has been saved successfully!", {
       duration: 2500,
     });
   }
@@ -129,7 +129,7 @@ export function ExpenseForm(props: Props) {
               <FormItem className="w-full">
                 <FormControl>
                   <Input
-                    className={`${errors.title?.message ? "animate-shake ring-destructive ring-2 ring-offset-1" : ""}
+                    className={`${errors.title?.message ? "animate-shake ring-2 ring-destructive ring-offset-1" : ""}
 											`}
                     placeholder="Title of expense"
                     {...field}
@@ -194,7 +194,7 @@ export function ExpenseForm(props: Props) {
                   >
                     <FormControl>
                       <SelectTrigger
-                        className={`${errors.category?.message ? "animate-shake ring-destructive ring-2 ring-offset-1" : ""}`}
+                        className={`${errors.category?.message ? "animate-shake ring-2 ring-destructive ring-offset-1" : ""}`}
                       >
                         <SelectValue placeholder="Category" />
                       </SelectTrigger>
