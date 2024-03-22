@@ -8,7 +8,7 @@ import {
 import { Button } from "~/components/ui/button";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { ExpenseForm } from "./ExpenseForm";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export function ExpenseDrawer() {
   const [open, setOpen] = useState(false);
@@ -27,7 +27,7 @@ export function ExpenseDrawer() {
       <DrawerContent className="px-4 pb-4">
         <div className="mx-auto w-full max-w-sm">
           <DrawerHeader>
-            <DrawerTitle className="text-primary text-xl">
+            <DrawerTitle className="text-xl text-primary">
               New Expense
             </DrawerTitle>
           </DrawerHeader>
