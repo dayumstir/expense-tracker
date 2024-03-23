@@ -18,12 +18,6 @@ export function Navbar() {
     return pathname !== url;
   };
 
-  const validPaths = ["/", "/expenses", "/analytics", "/settings"];
-
-  if (!validPaths.includes(pathname)) {
-    return;
-  }
-
   return (
     <div className="pb-safe-or-4 fixed bottom-0 flex w-full items-center justify-evenly bg-muted p-4">
       <Button

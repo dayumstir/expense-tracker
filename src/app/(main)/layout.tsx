@@ -3,7 +3,7 @@ import "~/styles/globals.css";
 import { Inter } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
-import { ThemeProvider } from "../components/theme-provider";
+import { ThemeProvider } from "~/components/theme-provider";
 import { Navbar } from "~/components/Navbar";
 import { Toaster } from "~/components/ui/sonner";
 import type { Metadata, Viewport } from "next";
@@ -76,8 +76,8 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Navbar />
             <Toaster position="top-center" richColors />
+            <Navbar />
             {children}
           </ThemeProvider>
         </TRPCReactProvider>
