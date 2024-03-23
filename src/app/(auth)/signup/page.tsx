@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -9,16 +10,18 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
-import { Input } from "~/components/ui/input";
 
+import { Input } from "~/components/ui/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { useState } from "react";
+
+import { FaApple } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
-const loginSchema = z.object({
+const signupSchema = z.object({
   email: z
     .string({
       required_error: "Email is required",
@@ -36,24 +39,24 @@ const loginSchema = z.object({
     .max(20),
 });
 
-export default function Login() {
+export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const form = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<z.infer<typeof signupSchema>>({
+    resolver: zodResolver(signupSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+  const onSubmit = async (data: z.infer<typeof signupSchema>) => {
     console.log(data);
   };
 
   return (
     <div className="mx-auto flex h-screen max-w-xs flex-col justify-center">
-      <h1 className="pb-6 text-4xl font-semibold">Login</h1>
+      <h1 className="pb-6 text-4xl font-semibold">Sign up</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
@@ -115,10 +118,40 @@ export default function Login() {
             )}
           />
           <Button className="w-full" type="submit">
-            Login
+            Sign up
           </Button>
         </form>
       </Form>
+      <div className="flex items-center gap-2 py-6">
+        <hr className="w-full" />
+        <p className="text-xs text-muted-foreground">OR</p>
+        <hr className="w-full" />
+      </div>
+      <Button
+        variant="outline"
+        className="mb-2 w-full font-normal text-muted-foreground"
+      >
+        <div className="flex items-center gap-2">
+          <FaApple className="h-5 w-5" />
+          Continue with Apple
+        </div>
+      </Button>
+      <Button
+        variant="outline"
+        className="mb-2 w-full font-normal text-muted-foreground"
+      >
+        <div className="flex items-center gap-2">
+          <FcGoogle className="h-5 w-5" />
+          Continue with Google
+        </div>
+      </Button>
+      <Link
+        href="/login"
+        className="py-4 text-center text-sm text-muted-foreground"
+      >
+        Already have an account?{" "}
+        <span className="font-semibold text-primary">Login</span>
+      </Link>
     </div>
   );
 }
