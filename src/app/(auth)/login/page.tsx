@@ -17,6 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useState } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
+import Link from "next/link";
 
 const loginSchema = z.object({
   email: z
@@ -36,10 +37,12 @@ const loginSchema = z.object({
     .max(20),
 });
 
+export type LoginInput = z.infer<typeof loginSchema>;
+
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const form = useForm<z.infer<typeof loginSchema>>({
+  const form = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
@@ -47,7 +50,7 @@ export default function Login() {
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+  const onSubmit = async (data: LoginInput) => {
     console.log(data);
   };
 
@@ -91,7 +94,7 @@ export default function Login() {
                     <Input
                       placeholder="Your password"
                       type={showPassword ? "text" : "password"}
-                      autoComplete="new-password"
+                      autoComplete="current-password"
                       {...field}
                       className="placeholder:text-muted-foreground/50"
                     />
@@ -119,6 +122,13 @@ export default function Login() {
           </Button>
         </form>
       </Form>
+      <Link
+        href="/signup"
+        className="py-4 text-center text-sm text-muted-foreground"
+      >
+        Don&apos;t have an account?{" "}
+        <span className="font-semibold text-primary">Sign up</span>
+      </Link>
     </div>
   );
 }

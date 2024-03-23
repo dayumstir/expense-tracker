@@ -20,8 +20,9 @@ import { useState } from "react";
 import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
+import { signUp } from "../server-actions";
 
-const signupSchema = z.object({
+const signUpSchema = z.object({
   email: z
     .string({
       required_error: "Email is required",
@@ -39,19 +40,28 @@ const signupSchema = z.object({
     .max(20),
 });
 
+export type SignUpInput = z.infer<typeof signUpSchema>;
+
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
-  const form = useForm<z.infer<typeof signupSchema>>({
-    resolver: zodResolver(signupSchema),
+  const form = useForm<SignUpInput>({
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof signupSchema>) => {
-    console.log(data);
+  const onSubmit = async (data: SignUpInput) => {
+    setSuccess("Check your email for further instructions");
+    const result = await signUp(data);
+    if (result?.error) {
+      setSuccess(null);
+      setError(result.error);
+    }
   };
 
   return (
@@ -152,6 +162,21 @@ export default function Signup() {
         Already have an account?{" "}
         <span className="font-semibold text-primary">Login</span>
       </Link>
+
+      {success && (
+        <div className="mb-3 mt-1 rounded-md border border-border bg-secondary/50 p-3">
+          <p className="text-center text-sm font-medium text-muted-foreground">
+            {success}
+          </p>
+        </div>
+      )}
+      {error && (
+        <div className="mb-3 mt-1 rounded-md border border-destructive bg-destructive/10 p-3">
+          <p className="text-center text-sm font-medium text-destructive">
+            {error}
+          </p>
+        </div>
+      )}
     </div>
   );
 }
