@@ -28,8 +28,8 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
+    statusBarStyle: "black",
     title: APP_DEFAULT_TITLE,
-    statusBarStyle: "black-translucent",
   },
   formatDetection: {
     telephone: false,
