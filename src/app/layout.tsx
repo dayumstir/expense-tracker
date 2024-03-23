@@ -13,9 +13,9 @@ const inter = Inter({
   variable: "--font-sans",
 });
 
-const APP_NAME = "Expense Tracker";
-const APP_DEFAULT_TITLE = "Expense Tracker";
-const APP_TITLE_TEMPLATE = "%s - Expense Tracker";
+const APP_NAME = "Penny - Expense Tracker";
+const APP_DEFAULT_TITLE = "Penny";
+const APP_TITLE_TEMPLATE = "%s - Penny Expense Tracker";
 const APP_DESCRIPTION = "A simple expense tracker";
 
 export const metadata: Metadata = {
@@ -28,9 +28,8 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "black",
     title: APP_DEFAULT_TITLE,
-    // startUpImage: [],
+    statusBarStyle: "black-translucent",
   },
   formatDetection: {
     telephone: false,
