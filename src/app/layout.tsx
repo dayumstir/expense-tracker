@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "black-translucent",
+    statusBarStyle: "black",
     title: APP_DEFAULT_TITLE,
   },
   formatDetection: {
@@ -68,7 +68,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable} pt-safe h-screen`}>
+      <body className={`font-sans ${inter.variable}`}>
         <TRPCReactProvider>
           <ThemeProvider
             attribute="class"
