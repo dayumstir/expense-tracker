@@ -68,7 +68,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable} py-safe`}>
+      <body className={`font-sans ${inter.variable} pt-safe`}>
         <TRPCReactProvider>
           <ThemeProvider
             attribute="class"
