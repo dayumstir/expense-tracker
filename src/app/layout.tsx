@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
+    statusBarStyle: "black",
     title: APP_DEFAULT_TITLE,
     // startUpImage: [],
   },
