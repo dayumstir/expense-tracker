@@ -222,20 +222,24 @@ export function ExpenseForm(props: Props) {
             <FormItem>
               <div className="relative bottom-24 flex items-center">
                 <FormControl>
-                  <input
+                  <div
                     className={`${errors.amount?.message ? "animate-shake text-destructive" : "text-foreground"} 
 											w-full bg-transparent py-16 text-center text-5xl font-bold`}
                     {...field}
-                    disabled
-                  />
+                  >
+                    <span className="relative bottom-2 pr-2 text-2xl text-muted-foreground">
+                      $
+                    </span>
+                    {field.value}
+                  </div>
                 </FormControl>
                 <Button
                   variant="ghost"
                   type="button"
-                  className="absolute right-0 hover:bg-transparent active:scale-95 active:opacity-80"
+                  className="absolute -right-2 hover:bg-transparent active:scale-95 active:opacity-80"
                 >
                   <BackspaceIcon
-                    className="h-6 opacity-40"
+                    className="h-6 text-muted-foreground"
                     onClick={() => handleBackspace(field)}
                   />
                 </Button>
