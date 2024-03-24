@@ -223,7 +223,7 @@ export function ExpenseForm(props: Props) {
             <FormItem>
               <div className="relative bottom-24 flex items-center">
                 <FormControl>
-                  <div
+                  <p
                     className={`${errors.amount?.message ? "animate-shake text-destructive" : "text-foreground"} 
 											w-full bg-transparent py-16 text-center text-5xl font-bold`}
                     {...field}
@@ -232,7 +232,7 @@ export function ExpenseForm(props: Props) {
                       $
                     </span>
                     {field.value}
-                  </div>
+                  </p>
                 </FormControl>
                 <Button
                   variant="ghost"

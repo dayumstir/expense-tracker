@@ -40,14 +40,14 @@ const signUpSchema = z.object({
     .max(20),
 });
 
-export type SignUpInput = z.infer<typeof signUpSchema>;
+export type SignUpSchemaType = z.infer<typeof signUpSchema>;
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  const form = useForm<SignUpInput>({
+  const form = useForm<SignUpSchemaType>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       email: "",
@@ -55,7 +55,7 @@ export default function Signup() {
     },
   });
 
-  const onSubmit = async (data: SignUpInput) => {
+  const onSubmit = async (data: SignUpSchemaType) => {
     setSuccess("Check your email for further instructions");
     const result = await signUp(data);
     if (result?.error) {
@@ -166,14 +166,16 @@ export default function Signup() {
       {success && (
         <div className="mb-3 mt-1 rounded-md border border-border bg-secondary/50 p-3">
           <p className="text-center text-sm font-medium text-muted-foreground">
-            {success}
+            {success}.
           </p>
         </div>
       )}
       {error && (
         <div className="mb-3 mt-1 rounded-md border border-destructive bg-destructive/10 p-3">
           <p className="text-center text-sm font-medium text-destructive">
-            {error}
+            {error}.
+            <br />
+            Please try again later.
           </p>
         </div>
       )}

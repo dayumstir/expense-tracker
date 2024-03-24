@@ -1,7 +1,9 @@
+import { cookies } from "next/headers";
 import { Navbar } from "~/components/Navbar";
 import { Toaster } from "~/components/ui/sonner";
+import { createClient } from "~/utils/supabase/server";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
