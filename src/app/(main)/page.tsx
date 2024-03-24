@@ -1,6 +1,4 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import { api } from "~/trpc/server";
 import { createClient } from "~/utils/supabase/server";
 
 export default async function Home() {
@@ -8,7 +6,7 @@ export default async function Home() {
   const supabase = createClient();
 
   const { data, error } = await supabase.auth.getUser();
-  if (error || !data?.user) {
+  if (error ?? !data?.user) {
     redirect("/login");
   }
 

@@ -1,6 +1,4 @@
-import { Button } from "~/components/ui/button";
 import { Darkmode } from "~/components/Darkmode";
-import { api } from "~/trpc/server";
 import LogoutButton from "./LogoutButton";
 import { createClient } from "~/utils/supabase/server";
 import { redirect } from "next/navigation";
@@ -10,7 +8,7 @@ export default async function Settings() {
   const supabase = createClient();
 
   const { data, error } = await supabase.auth.getUser();
-  if (error || !data?.user) {
+  if (error ?? !data?.user) {
     redirect("/login");
   }
 

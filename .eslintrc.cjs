@@ -28,6 +28,7 @@ const config = {
     ],
     "@typescript-eslint/no-unsafe-argument": "warn",
     "@typescript-eslint/require-await": "off",
+    "@typescript-eslint/await-thenable": "off",
     "@typescript-eslint/no-misused-promises": [
       "error",
       {

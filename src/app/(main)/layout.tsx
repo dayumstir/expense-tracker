@@ -1,7 +1,5 @@
-import { cookies } from "next/headers";
 import { Navbar } from "~/components/Navbar";
 import { Toaster } from "~/components/ui/sonner";
-import { createClient } from "~/utils/supabase/server";
 
 export default async function RootLayout({
   children,
