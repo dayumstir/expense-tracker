@@ -18,7 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
-import { login } from "../server-actions";
+import { login } from "../actions";
 
 const loginSchema = z.object({
   email: z
@@ -50,13 +50,9 @@ export default function Login() {
       password: "",
     },
   });
-  const [error, setError] = useState<string | null>(null);
 
   const onSubmit = async (data: LoginSchemaType) => {
-    const result = await login(data);
-    if (result?.error) {
-      setError(result.error);
-    }
+    await login(data);
   };
 
   return (
@@ -129,18 +125,11 @@ export default function Login() {
       </Form>
       <Link
         href="/signup"
-        className="py-4 text-center text-sm text-muted-foreground"
+        className="py-6 text-center text-sm text-muted-foreground"
       >
         Don&apos;t have an account?{" "}
         <span className="font-semibold text-primary">Sign up</span>
       </Link>
-      {error && (
-        <div className="mb-3 mt-1 rounded-md border border-destructive bg-destructive/10 p-3">
-          <p className="text-center text-sm font-medium text-destructive">
-            {error}
-          </p>
-        </div>
-      )}
     </div>
   );
 }

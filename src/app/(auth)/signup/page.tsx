@@ -20,7 +20,8 @@ import { useState } from "react";
 import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
-import { signUp } from "../server-actions";
+import { signUp } from "../actions";
+import Image from "next/image";
 
 const signUpSchema = z.object({
   email: z
@@ -44,8 +45,7 @@ export type SignUpSchemaType = z.infer<typeof signUpSchema>;
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
   const form = useForm<SignUpSchemaType>({
     resolver: zodResolver(signUpSchema),
@@ -56,13 +56,30 @@ export default function Signup() {
   });
 
   const onSubmit = async (data: SignUpSchemaType) => {
-    setSuccess("Check your email for further instructions");
-    const result = await signUp(data);
-    if (result?.error) {
-      setSuccess(null);
-      setError(result.error);
-    }
+    await signUp(data);
+    setSuccess(true);
   };
+
+  if (success) {
+    return (
+      <div className="mx-auto flex h-screen max-w-xs flex-col items-center justify-center">
+        <h1 className="pb-6 text-4xl font-semibold text-primary">
+          Welcome to Penny!
+        </h1>
+        <Image
+          src="/email-sent.png"
+          alt="email"
+          width={200}
+          height={200}
+        ></Image>
+        <div className="text-pretty pt-6 text-center">
+          You have signed up successfully.
+          <br />
+          Please check your email to confirm your account.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto flex h-screen max-w-xs flex-col justify-center">
@@ -162,23 +179,6 @@ export default function Signup() {
         Already have an account?{" "}
         <span className="font-semibold text-primary">Login</span>
       </Link>
-
-      {success && (
-        <div className="mb-3 mt-1 rounded-md border border-border bg-secondary/50 p-3">
-          <p className="text-center text-sm font-medium text-muted-foreground">
-            {success}.
-          </p>
-        </div>
-      )}
-      {error && (
-        <div className="mb-3 mt-1 rounded-md border border-destructive bg-destructive/10 p-3">
-          <p className="text-center text-sm font-medium text-destructive">
-            {error}.
-            <br />
-            Please try again later.
-          </p>
-        </div>
-      )}
     </div>
   );
 }
