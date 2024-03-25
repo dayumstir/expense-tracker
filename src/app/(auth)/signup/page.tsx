@@ -33,7 +33,7 @@ const signUpSchema = z.object({
     .min(8, {
       message: "Password must be at least 8 characters",
     })
-    .max(20),
+    .max(20, { message: "Password cannot be longer than 20 characters" }),
 });
 
 export type SignUpSchemaType = z.infer<typeof signUpSchema>;
@@ -61,12 +61,7 @@ export default function Signup() {
         <h1 className="pb-6 text-4xl font-semibold text-primary">
           Welcome to Penny!
         </h1>
-        <Image
-          src="/email-sent.png"
-          alt="email"
-          width={200}
-          height={200}
-        ></Image>
+        <Image src="/email-sent.png" alt="email" width={200} height={200} />
         <div className="text-pretty pt-6 text-center">
           You have signed up successfully.
           <br />
@@ -95,7 +90,6 @@ export default function Signup() {
                     type="email"
                     autoComplete="email"
                     {...field}
-                    className="placeholder:text-muted-foreground/50"
                   />
                 </FormControl>
                 <FormMessage />
@@ -118,7 +112,6 @@ export default function Signup() {
                       type={showPassword ? "text" : "password"}
                       autoComplete="password"
                       {...field}
-                      className="placeholder:text-muted-foreground/50"
                     />
                     <Button
                       type="button"

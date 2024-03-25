@@ -1,20 +1,16 @@
-import { Darkmode } from "~/components/Darkmode";
+import { DarkMode } from "~/components/DarkMode";
 import LogoutButton from "./LogoutButton";
 import { createClient } from "~/utils/supabase/server";
 import { redirect } from "next/navigation";
 
 export default async function Settings() {
-  // Redirect user if not logged in
   const supabase = createClient();
-
   const { data, error } = await supabase.auth.getUser();
-  if (error ?? !data?.user) {
-    redirect("/login");
-  }
+  if (error ?? !data?.user) redirect("/login");
 
   return (
     <div>
-      <Darkmode />
+      <DarkMode />
       <LogoutButton />
     </div>
   );

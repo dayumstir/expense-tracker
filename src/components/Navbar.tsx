@@ -11,7 +11,7 @@ import {
 import { ExpenseDrawer } from "./add-expense/ExpenseDrawer";
 import { Button } from "./ui/button";
 
-export function Navbar() {
+export function NavBar() {
   const pathname = usePathname();
 
   const isNotSelected = (url: string) => {

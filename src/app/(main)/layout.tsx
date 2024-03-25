@@ -1,4 +1,4 @@
-import { Navbar } from "~/components/Navbar";
+import { NavBar } from "~/components/NavBar";
 import { Toaster } from "~/components/ui/sonner";
 
 export default async function RootLayout({
@@ -9,7 +9,7 @@ export default async function RootLayout({
   return (
     <>
       <Toaster position="top-center" richColors />
-      <Navbar />
+      <NavBar />
       {children}
     </>
   );

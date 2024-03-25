@@ -15,9 +15,6 @@ export async function signUp(data: SignUpSchemaType) {
   if (error) {
     redirect("/error");
   }
-
-  revalidatePath("/", "layout");
-  redirect("/");
 }
 export async function login(data: LoginSchemaType) {
   const supabase = createClient();

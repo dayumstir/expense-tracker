@@ -73,7 +73,6 @@ export default function Login() {
                     type="email"
                     autoComplete="email"
                     {...field}
-                    className="placeholder:text-muted-foreground/50"
                   />
                 </FormControl>
                 <FormMessage />
@@ -96,7 +95,6 @@ export default function Login() {
                       type={showPassword ? "text" : "password"}
                       autoComplete="password"
                       {...field}
-                      className="placeholder:text-muted-foreground/50"
                     />
                     <Button
                       type="button"
