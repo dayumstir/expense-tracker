@@ -1,4 +1,4 @@
-import { DarkMode } from "~/components/DarkMode";
+// import { DarkMode } from "~/components/DarkMode";
 import LogoutButton from "./LogoutButton";
 import { createClient } from "~/utils/supabase/server";
 import { redirect } from "next/navigation";
@@ -10,7 +10,7 @@ export default async function Settings() {
 
   return (
     <div>
-      <DarkMode />
+      {/* <DarkMode /> */}
       <LogoutButton />
     </div>
   );
