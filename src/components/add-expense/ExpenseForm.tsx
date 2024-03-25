@@ -83,17 +83,11 @@ export function ExpenseForm(props: Props) {
       "amount"
     >,
   ) => {
-    if (field.value.length > 7) {
-      return;
-    }
-    if (key === "." && field.value.includes(".")) {
-      return;
-    }
+    if (field.value.length > 7) return;
+    if (key === "." && field.value.includes(".")) return;
     // Check if there are 2 or more digits after decimal place
     const regex = /\.\d{2}\b/;
-    if (field.value.includes(".") && regex.test(field.value)) {
-      return;
-    }
+    if (field.value.includes(".") && regex.test(field.value)) return;
 
     if (field.value === "0" && key !== ".") {
       field.onChange(key);
@@ -131,8 +125,7 @@ export function ExpenseForm(props: Props) {
               <FormItem className="w-full">
                 <FormControl>
                   <Input
-                    className={`${errors.title?.message ? "animate-shake ring-2 ring-destructive ring-offset-1" : ""}
-											`}
+                    className={`${errors.title?.message ? "animate-shake ring-2 ring-destructive ring-offset-1" : ""}`}
                     placeholder="Title of expense"
                     {...field}
                   />
