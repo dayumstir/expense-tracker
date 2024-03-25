@@ -48,7 +48,7 @@ export default function Login() {
     setLoading(true);
     const error = await login(data);
 
-    if (error) {
+    if (error !== null && error !== undefined) {
       setLoading(false);
       form.setError("password", { message: "Email or password is incorrect" });
     }
