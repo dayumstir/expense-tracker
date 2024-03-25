@@ -24,17 +24,12 @@ import { signUp } from "../actions";
 import Image from "next/image";
 
 const signUpSchema = z.object({
-  email: z
-    .string({
-      required_error: "Email is required",
-    })
-    .email({
-      message: "Invalid email address",
-    }),
+  email: z.string().trim().min(1, { message: "Email is required" }).email({
+    message: "Invalid email address",
+  }),
   password: z
-    .string({
-      required_error: "Password is required",
-    })
+    .string()
+    .min(1, { message: "Password is required" })
     .min(8, {
       message: "Password must be at least 8 characters",
     })
@@ -121,7 +116,7 @@ export default function Signup() {
                     <Input
                       placeholder="Your password"
                       type={showPassword ? "text" : "password"}
-                      autoComplete="new-password"
+                      autoComplete="password"
                       {...field}
                       className="placeholder:text-muted-foreground/50"
                     />
@@ -174,7 +169,7 @@ export default function Signup() {
       </Button>
       <Link
         href="/login"
-        className="py-4 text-center text-sm text-muted-foreground"
+        className="my-4 text-center text-sm text-muted-foreground"
       >
         Already have an account?{" "}
         <span className="font-semibold text-primary">Login</span>

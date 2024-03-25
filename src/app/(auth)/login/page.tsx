@@ -19,29 +19,22 @@ import { useState } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { login } from "../actions";
+import { Loader2 } from "lucide-react";
 
 const loginSchema = z.object({
-  email: z
-    .string({
-      required_error: "Email is required",
-    })
-    .email({
-      message: "Invalid email address",
-    }),
-  password: z
-    .string({
-      required_error: "Password is required",
-    })
-    .min(8, {
-      message: "Password must be at least 8 characters",
-    })
-    .max(20),
+  email: z.string().trim().min(1, { message: "Email is required" }).email({
+    message: "Invalid email address",
+  }),
+  password: z.string().min(1, {
+    message: "Password is required",
+  }),
 });
 
 export type LoginSchemaType = z.infer<typeof loginSchema>;
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<LoginSchemaType>({
     resolver: zodResolver(loginSchema),
@@ -52,7 +45,13 @@ export default function Login() {
   });
 
   const onSubmit = async (data: LoginSchemaType) => {
-    await login(data);
+    setLoading(true);
+    const error = await login(data);
+
+    if (error) {
+      setLoading(false);
+      form.setError("password", { message: "Email or password is incorrect" });
+    }
   };
 
   return (
@@ -95,7 +94,7 @@ export default function Login() {
                     <Input
                       placeholder="Your password"
                       type={showPassword ? "text" : "password"}
-                      autoComplete="current-password"
+                      autoComplete="password"
                       {...field}
                       className="placeholder:text-muted-foreground/50"
                     />
@@ -118,14 +117,18 @@ export default function Login() {
               </FormItem>
             )}
           />
-          <Button className="w-full" type="submit">
-            Login
+          <Button className="w-full" type="submit" disabled={loading}>
+            {loading ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              "Login"
+            )}
           </Button>
         </form>
       </Form>
       <Link
         href="/signup"
-        className="py-6 text-center text-sm text-muted-foreground"
+        className="my-6 text-center text-sm text-muted-foreground"
       >
         Don&apos;t have an account?{" "}
         <span className="font-semibold text-primary">Sign up</span>
