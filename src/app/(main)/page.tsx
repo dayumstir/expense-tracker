@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "~/utils/supabase/server";
+import { api } from "~/trpc/server";
 
 export default async function Home() {
   // Redirect user if not logged in
