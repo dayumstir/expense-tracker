@@ -33,8 +33,8 @@ import {
   CalendarIcon,
   CheckIcon,
 } from "@heroicons/react/24/solid";
-import { useState } from "react";
-import { createNewExpense } from "./actions";
+import { useEffect, useState } from "react";
+import { createNewExpense, getCategories } from "./actions";
 
 const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0"];
 
@@ -52,6 +52,7 @@ export type ExpenseSchemaType = z.infer<typeof expenseSchema>;
 
 export function ExpenseForm(props: { closeDrawer: () => void }) {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [userCategories, setUserCategories] = useState<string[]>([]);
 
   const form = useForm<ExpenseSchemaType>({
     resolver: zodResolver(expenseSchema),
@@ -118,6 +119,17 @@ export function ExpenseForm(props: { closeDrawer: () => void }) {
     }
   };
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const categories = await getCategories();
+      if (categories) {
+        setUserCategories(categories);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -134,7 +146,6 @@ export function ExpenseForm(props: { closeDrawer: () => void }) {
                     {...field}
                   />
                 </FormControl>
-                {}
               </FormItem>
             )}
           />
@@ -199,12 +210,45 @@ export function ExpenseForm(props: { closeDrawer: () => void }) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent align="end">
-                      <SelectItem value="Food">Food</SelectItem>
-                      <SelectItem value="Entertainment">
-                        Entertainment
-                      </SelectItem>
-                      <SelectItem value="Transport">Transport</SelectItem>
-                      <SelectItem value="Gifts">Gifts</SelectItem>
+                      {userCategories && userCategories.length > 0 ? (
+                        userCategories.map((category) => (
+                          <SelectItem key={category} value={category}>
+                            {category}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem disabled key="disabled" value="disabled">
+                          Loading...
+                        </SelectItem>
+                      )}
+                      {userCategories && userCategories.length > 0 ? (
+                        userCategories.map((category) => (
+                          <SelectItem
+                            key={category + "2"}
+                            value={category + "2"}
+                          >
+                            {category}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem disabled key="disabled" value="disabled">
+                          Loading...
+                        </SelectItem>
+                      )}
+                      {userCategories && userCategories.length > 0 ? (
+                        userCategories.map((category) => (
+                          <SelectItem
+                            key={category + "1"}
+                            value={category + "1"}
+                          >
+                            {category}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem disabled key="disabled" value="disabled">
+                          Loading...
+                        </SelectItem>
+                      )}
                     </SelectContent>
                   </Select>
                 </FormItem>

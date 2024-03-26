@@ -14,3 +14,8 @@ export async function createNewExpense(data: ExpenseSchemaType) {
 
   redirect("/expenses");
 }
+
+export async function getCategories() {
+  const user = await api.user.getById();
+  return user?.categories;
+}
