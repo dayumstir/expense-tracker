@@ -22,6 +22,7 @@ import { FcGoogle } from "react-icons/fc";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import { signUp } from "../actions";
 import Image from "next/image";
+import { Loader2 } from "lucide-react";
 
 const signUpSchema = z.object({
   email: z.string().trim().min(1, { message: "Email is required" }).email({
@@ -40,6 +41,7 @@ export type SignUpSchemaType = z.infer<typeof signUpSchema>;
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const form = useForm<SignUpSchemaType>({
@@ -51,6 +53,7 @@ export default function Signup() {
   });
 
   const onSubmit = async (data: SignUpSchemaType) => {
+    setLoading(true);
     await signUp(data);
     setSuccess(true);
   };
@@ -132,8 +135,12 @@ export default function Signup() {
               </FormItem>
             )}
           />
-          <Button className="w-full" type="submit">
-            Sign up
+          <Button className="w-full" type="submit" disabled={loading}>
+            {loading ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              "Sign up"
+            )}
           </Button>
         </form>
       </Form>
