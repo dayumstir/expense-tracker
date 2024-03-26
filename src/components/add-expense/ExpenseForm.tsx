@@ -127,7 +127,7 @@ export function ExpenseForm(props: { closeDrawer: () => void }) {
       }
     };
 
-    fetchCategories();
+    fetchCategories().catch(console.error);
   }, []);
 
   return (
