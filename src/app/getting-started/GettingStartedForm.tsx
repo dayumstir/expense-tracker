@@ -18,19 +18,6 @@ import {
 import { Input } from "~/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "../../components/ui/toggle-group";
 
-const newUserSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(2, {
-      message: "Name must be at least 2 characters",
-    })
-    .max(10, { message: "Name cannot be longer than 10 characters" }),
-  categories: z.string().array().nonempty(),
-});
-
-export type NewUserSchemaType = z.infer<typeof newUserSchema>;
-
 const defaultCategories = [
   "Food",
   "Entertainment",
@@ -39,6 +26,8 @@ const defaultCategories = [
   "Travel",
   "Healthcare",
   "Gifts",
+  "Subscriptions",
+  "Sports",
   "Others",
 ];
 
@@ -50,6 +39,25 @@ const defaultSelectedCategories = [
   "Travel",
 ];
 
+const newUserSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(1, {
+      message: "Name is required",
+    })
+    .min(2, {
+      message: "Name must be at least 2 characters",
+    })
+    .max(10, { message: "Name cannot be longer than 10 characters" }),
+  categories: z
+    .string()
+    .array()
+    .nonempty({ message: "Please select at least one category" }),
+});
+
+export type NewUserSchemaType = z.infer<typeof newUserSchema>;
+
 export default function GettingStartedForm() {
   const form = useForm<NewUserSchemaType>({
     resolver: zodResolver(newUserSchema),
@@ -57,6 +65,7 @@ export default function GettingStartedForm() {
       name: "",
       categories: defaultSelectedCategories,
     },
+    shouldFocusError: false,
   });
 
   const onSubmit = async (values: NewUserSchemaType) => {
@@ -72,7 +81,7 @@ export default function GettingStartedForm() {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel className="text-md">Name</FormLabel>
               <FormControl>
                 <Input placeholder="Your name" {...field} />
               </FormControl>
@@ -88,19 +97,20 @@ export default function GettingStartedForm() {
           name="categories"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Categories</FormLabel>
+              <FormLabel className="text-md">Categories</FormLabel>
               <FormControl>
                 <ToggleGroup
                   type="multiple"
                   className="flex max-w-xs flex-wrap justify-start"
                   defaultValue={defaultSelectedCategories}
+                  onValueChange={field.onChange}
                 >
                   {defaultCategories.map((category) => (
                     <ToggleGroupItem
                       key={category}
                       value={category}
                       defaultChecked
-                      className="hover:bg-transparent hover:text-foreground data-[state=on]:bg-primary/40"
+                      className="shrink-on-tap hover:bg-transparent hover:text-foreground data-[state=on]:bg-primary/40"
                     >
                       {category}
                     </ToggleGroupItem>

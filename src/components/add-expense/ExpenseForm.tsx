@@ -4,7 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { z } from "zod";
 import { cn } from "~/lib/utils";
-import { ControllerRenderProps, useForm, useFormState } from "react-hook-form";
+import {
+  type ControllerRenderProps,
+  useForm,
+  useFormState,
+} from "react-hook-form";
 
 import { Button } from "~/components/ui/button";
 import { Calendar } from "~/components/ui/calendar";
@@ -37,7 +41,7 @@ type Props = {
 
 const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0"];
 
-const FormSchema = z.object({
+export const expenseSchema = z.object({
   title: z.string().min(1),
   amount: z
     .string()
@@ -50,8 +54,8 @@ const FormSchema = z.object({
 export function ExpenseForm(props: Props) {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof expenseSchema>>({
+    resolver: zodResolver(expenseSchema),
     defaultValues: {
       title: "",
       amount: "0",
@@ -63,7 +67,7 @@ export function ExpenseForm(props: Props) {
 
   const { errors } = useFormState({ control: form.control });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  function onSubmit(data: z.infer<typeof expenseSchema>) {
     props.closeDrawer();
 
     toast.success("Your expense has been saved successfully!", {
@@ -230,7 +234,7 @@ export function ExpenseForm(props: Props) {
                 <Button
                   variant="ghost"
                   type="button"
-                  className="absolute -right-2 hover:bg-transparent active:scale-95 active:opacity-80"
+                  className="shrink-on-tap absolute -right-2 hover:bg-transparent"
                 >
                   <BackspaceIcon
                     className="h-6 text-muted-foreground"
@@ -242,14 +246,14 @@ export function ExpenseForm(props: Props) {
                 {KEYS.map((key: string) => (
                   <Button
                     type="button"
-                    className="bg-muted py-8 text-2xl text-muted-foreground hover:bg-muted active:scale-95 active:opacity-80"
+                    className="shrink-on-tap bg-muted py-8 text-2xl text-muted-foreground hover:bg-muted"
                     onClick={() => handleKeypadPress(key, field)}
                     key={key}
                   >
                     {key}
                   </Button>
                 ))}
-                <Button className="bg-primary py-8 active:scale-95 active:opacity-80">
+                <Button className="shrink-on-tap bg-primary py-8">
                   <CheckIcon className="h-8" />
                 </Button>
               </div>

@@ -10,5 +10,9 @@ export default async function Home() {
   const user = await api.user.getById();
   if (!user) redirect("/getting-started");
 
-  return <div className="">Hey {data.user.email}!</div>;
+  return (
+    <div className="flex h-screen w-full items-center justify-center">
+      <p>Hey {user.name}!</p>
+    </div>
+  );
 }

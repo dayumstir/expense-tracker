@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { NewUserSchemaType } from "~/app/getting-started/GettingStartedForm";
+import { type NewUserSchemaType } from "~/app/getting-started/GettingStartedForm";
 import { api } from "~/trpc/server";
 
 export async function createNewUser(data: NewUserSchemaType) {

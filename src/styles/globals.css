@@ -83,3 +83,7 @@
 .animate-shake {
   animation: shake 0.2s;
 }
+
+.shrink-on-tap {
+  @apply active:scale-95 active:opacity-80;
+}
