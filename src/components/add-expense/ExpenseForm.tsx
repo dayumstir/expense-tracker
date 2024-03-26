@@ -34,14 +34,11 @@ import {
   CheckIcon,
 } from "@heroicons/react/24/solid";
 import { useState } from "react";
-
-type Props = {
-  closeDrawer: () => void;
-};
+import { createNewExpense } from "./actions";
 
 const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0"];
 
-export const expenseSchema = z.object({
+const expenseSchema = z.object({
   title: z.string().min(1),
   amount: z
     .string()
@@ -51,10 +48,12 @@ export const expenseSchema = z.object({
   category: z.string().min(1),
 });
 
-export function ExpenseForm(props: Props) {
+export type ExpenseSchemaType = z.infer<typeof expenseSchema>;
+
+export function ExpenseForm(props: { closeDrawer: () => void }) {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
-  const form = useForm<z.infer<typeof expenseSchema>>({
+  const form = useForm<ExpenseSchemaType>({
     resolver: zodResolver(expenseSchema),
     defaultValues: {
       title: "",
@@ -67,13 +66,14 @@ export function ExpenseForm(props: Props) {
 
   const { errors } = useFormState({ control: form.control });
 
-  function onSubmit(data: z.infer<typeof expenseSchema>) {
+  const onSubmit = async (data: ExpenseSchemaType) => {
     props.closeDrawer();
 
+    await createNewExpense(data);
     toast.success("Your expense has been saved successfully!", {
       duration: 2500,
     });
-  }
+  };
 
   const handleKeypadPress = (
     key: string,

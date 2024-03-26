@@ -1,5 +1,4 @@
 import { NavBar } from "~/components/NavBar";
-import { Toaster } from "~/components/ui/sonner";
 
 export default async function RootLayout({
   children,
@@ -8,7 +7,6 @@ export default async function RootLayout({
 }) {
   return (
     <>
-      <Toaster position="top-center" richColors />
       <NavBar />
       {children}
     </>

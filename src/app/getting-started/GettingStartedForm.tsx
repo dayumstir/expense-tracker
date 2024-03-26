@@ -17,6 +17,7 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "../../components/ui/toggle-group";
+import { toast } from "sonner";
 
 const defaultCategories = [
   "Food",
@@ -70,6 +71,10 @@ export default function GettingStartedForm() {
 
   const onSubmit = async (values: NewUserSchemaType) => {
     await createNewUser(values);
+
+    toast.success("Welcome to Penny!", {
+      duration: 2500,
+    });
   };
 
   return (
