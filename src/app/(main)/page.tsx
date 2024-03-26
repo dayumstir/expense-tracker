@@ -11,7 +11,7 @@ export default async function Home() {
   if (!user) redirect("/getting-started");
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center">
+    <div className="flex min-h-screen w-full items-center justify-center pb-[72px]">
       <p>Hey {user.name}!</p>
     </div>
   );

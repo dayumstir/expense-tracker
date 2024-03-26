@@ -209,38 +209,14 @@ export function ExpenseForm(props: { closeDrawer: () => void }) {
                         <SelectValue placeholder="Category" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent align="end">
+                    <SelectContent
+                      align="end"
+                      side="bottom"
+                      className="max-h-72"
+                    >
                       {userCategories && userCategories.length > 0 ? (
                         userCategories.map((category) => (
                           <SelectItem key={category} value={category}>
-                            {category}
-                          </SelectItem>
-                        ))
-                      ) : (
-                        <SelectItem disabled key="disabled" value="disabled">
-                          Loading...
-                        </SelectItem>
-                      )}
-                      {userCategories && userCategories.length > 0 ? (
-                        userCategories.map((category) => (
-                          <SelectItem
-                            key={category + "2"}
-                            value={category + "2"}
-                          >
-                            {category}
-                          </SelectItem>
-                        ))
-                      ) : (
-                        <SelectItem disabled key="disabled" value="disabled">
-                          Loading...
-                        </SelectItem>
-                      )}
-                      {userCategories && userCategories.length > 0 ? (
-                        userCategories.map((category) => (
-                          <SelectItem
-                            key={category + "1"}
-                            value={category + "1"}
-                          >
                             {category}
                           </SelectItem>
                         ))

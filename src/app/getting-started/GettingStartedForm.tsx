@@ -17,7 +17,8 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "../../components/ui/toggle-group";
-import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
+import { useState } from "react";
 
 const defaultCategories = [
   "Food",
@@ -60,6 +61,8 @@ const newUserSchema = z.object({
 export type NewUserSchemaType = z.infer<typeof newUserSchema>;
 
 export default function GettingStartedForm() {
+  const [loading, setLoading] = useState(false);
+
   const form = useForm<NewUserSchemaType>({
     resolver: zodResolver(newUserSchema),
     defaultValues: {
@@ -70,11 +73,8 @@ export default function GettingStartedForm() {
   });
 
   const onSubmit = async (values: NewUserSchemaType) => {
+    setLoading(true);
     await createNewUser(values);
-
-    toast.success("Welcome to Penny!", {
-      duration: 2500,
-    });
   };
 
   return (
@@ -130,8 +130,12 @@ export default function GettingStartedForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">
-          Continue
+        <Button className="w-full" type="submit" disabled={loading}>
+          {loading ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            "Continue"
+          )}
         </Button>
       </form>
     </Form>
