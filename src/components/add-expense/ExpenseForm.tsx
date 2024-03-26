@@ -35,6 +35,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { createNewExpense, getCategories } from "./actions";
+import { Loader2 } from "lucide-react";
 
 const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0"];
 
@@ -53,6 +54,7 @@ export type ExpenseSchemaType = z.infer<typeof expenseSchema>;
 export function ExpenseForm(props: { closeDrawer: () => void }) {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [userCategories, setUserCategories] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<ExpenseSchemaType>({
     resolver: zodResolver(expenseSchema),
@@ -68,9 +70,10 @@ export function ExpenseForm(props: { closeDrawer: () => void }) {
   const { errors } = useFormState({ control: form.control });
 
   const onSubmit = async (data: ExpenseSchemaType) => {
-    props.closeDrawer();
-
+    setLoading(true);
     await createNewExpense(data);
+
+    props.closeDrawer();
     toast.success("Your expense has been saved successfully!", {
       duration: 2500,
     });
@@ -273,8 +276,16 @@ export function ExpenseForm(props: { closeDrawer: () => void }) {
                     {key}
                   </Button>
                 ))}
-                <Button className="shrink-on-tap bg-primary py-8">
-                  <CheckIcon className="h-8" />
+                <Button
+                  className="shrink-on-tap bg-primary py-8"
+                  type="submit"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <Loader2 className="mr-2 h-6 w-6 animate-spin" />
+                  ) : (
+                    <CheckIcon className="h-8" />
+                  )}
                 </Button>
               </div>
             </FormItem>
