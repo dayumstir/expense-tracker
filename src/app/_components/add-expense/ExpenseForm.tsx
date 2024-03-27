@@ -37,7 +37,7 @@ import { useEffect, useState } from "react";
 import { createNewExpense, getCategories } from "./actions";
 import { Loader2 } from "lucide-react";
 
-const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0"];
+const KEYPAD_BUTTONS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0"];
 
 const expenseSchema = z.object({
   title: z.string().min(1).max(20),
@@ -80,7 +80,7 @@ export function ExpenseForm(props: { closeDrawer: () => void }) {
   };
 
   const handleKeypadPress = (
-    key: string,
+    keyButton: string,
     field: ControllerRenderProps<
       {
         title: string;
@@ -92,15 +92,15 @@ export function ExpenseForm(props: { closeDrawer: () => void }) {
     >,
   ) => {
     if (field.value.length > 7) return;
-    if (key === "." && field.value.includes(".")) return;
+    if (keyButton === "." && field.value.includes(".")) return;
     // Check if there are 2 or more digits after decimal place
     const regex = /\.\d{2}\b/;
     if (field.value.includes(".") && regex.test(field.value)) return;
 
-    if (field.value === "0" && key !== ".") {
-      field.onChange(key);
+    if (field.value === "0" && keyButton !== ".") {
+      field.onChange(keyButton);
     } else {
-      field.onChange(field.value + key);
+      field.onChange(field.value + keyButton);
     }
   };
 
@@ -266,14 +266,14 @@ export function ExpenseForm(props: { closeDrawer: () => void }) {
                 </Button>
               </div>
               <div className="grid w-full max-w-sm grid-cols-3 gap-4">
-                {KEYS.map((key: string) => (
+                {KEYPAD_BUTTONS.map((keyButton: string) => (
                   <Button
                     type="button"
                     className="shrink-on-tap bg-muted py-8 text-2xl text-muted-foreground hover:bg-muted"
-                    onClick={() => handleKeypadPress(key, field)}
-                    key={key}
+                    onClick={() => handleKeypadPress(keyButton, field)}
+                    key={keyButton}
                   >
-                    {key}
+                    {keyButton}
                   </Button>
                 ))}
                 <Button

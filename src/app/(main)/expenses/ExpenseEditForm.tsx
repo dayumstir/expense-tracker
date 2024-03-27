@@ -34,12 +34,24 @@ import {
   CheckIcon,
 } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
-import { getCategories } from "./actions";
+import { getCategories, updateExpense } from "./actions";
 import { Loader2 } from "lucide-react";
 
-const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0"];
+const KEYPAD_BUTTONS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0"];
+
+type Props = {
+  expense: {
+    id: string;
+    title: string;
+    amount: number;
+    date: Date;
+    category: string;
+  };
+  closeDrawer: () => void;
+};
 
 const expenseSchema = z.object({
+  id: z.string().cuid(),
   title: z.string().min(1).max(20),
   amount: z
     .string()
@@ -49,40 +61,44 @@ const expenseSchema = z.object({
   category: z.string().min(1),
 });
 
-export type ExpenseSchemaType = z.infer<typeof expenseSchema>;
+export type ExpenseEditSchemaType = z.infer<typeof expenseSchema>;
 
-export function ExpenseEditForm(props: { closeDrawer: () => void }) {
+export function ExpenseEditForm(props: Props) {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [userCategories, setUserCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const form = useForm<ExpenseSchemaType>({
+  const currentExpense = props.expense;
+
+  const form = useForm<ExpenseEditSchemaType>({
     resolver: zodResolver(expenseSchema),
     defaultValues: {
-      title: "",
-      amount: "0",
-      date: new Date(),
-      category: "",
+      id: currentExpense.id,
+      title: currentExpense.title,
+      amount: currentExpense.amount.toString(),
+      date: currentExpense.date,
+      category: currentExpense.category,
     },
     shouldFocusError: false,
   });
 
   const { errors } = useFormState({ control: form.control });
 
-  const onSubmit = async (data: ExpenseSchemaType) => {
+  const onSubmit = async (data: ExpenseEditSchemaType) => {
     setLoading(true);
-    // await createNewExpense(data);
+    await updateExpense(data);
 
     props.closeDrawer();
-    toast.success("Your expense has been saved successfully!", {
+    toast.success("Your expense has been updated successfully!", {
       duration: 2500,
     });
   };
 
   const handleKeypadPress = (
-    key: string,
+    keyButton: string,
     field: ControllerRenderProps<
       {
+        id: string;
         title: string;
         amount: string;
         date: Date;
@@ -92,21 +108,22 @@ export function ExpenseEditForm(props: { closeDrawer: () => void }) {
     >,
   ) => {
     if (field.value.length > 7) return;
-    if (key === "." && field.value.includes(".")) return;
+    if (keyButton === "." && field.value.includes(".")) return;
     // Check if there are 2 or more digits after decimal place
     const regex = /\.\d{2}\b/;
     if (field.value.includes(".") && regex.test(field.value)) return;
 
-    if (field.value === "0" && key !== ".") {
-      field.onChange(key);
+    if (field.value === "0" && keyButton !== ".") {
+      field.onChange(keyButton);
     } else {
-      field.onChange(field.value + key);
+      field.onChange(field.value + keyButton);
     }
   };
 
   const handleBackspace = (
     field: ControllerRenderProps<
       {
+        id: string;
         title: string;
         amount: string;
         date: Date;
@@ -224,9 +241,14 @@ export function ExpenseEditForm(props: { closeDrawer: () => void }) {
                           </SelectItem>
                         ))
                       ) : (
-                        <SelectItem disabled key="disabled" value="disabled">
-                          Loading...
-                        </SelectItem>
+                        <>
+                          <SelectItem key={field.value} value={field.value}>
+                            {field.value}
+                          </SelectItem>
+                          <SelectItem disabled key="disabled" value="disabled">
+                            Loading...
+                          </SelectItem>
+                        </>
                       )}
                     </SelectContent>
                   </Select>
@@ -266,14 +288,14 @@ export function ExpenseEditForm(props: { closeDrawer: () => void }) {
                 </Button>
               </div>
               <div className="grid w-full max-w-sm grid-cols-3 gap-4">
-                {KEYS.map((key: string) => (
+                {KEYPAD_BUTTONS.map((keyButton: string) => (
                   <Button
                     type="button"
                     className="shrink-on-tap bg-muted py-8 text-2xl text-muted-foreground hover:bg-muted"
-                    onClick={() => handleKeypadPress(key, field)}
-                    key={key}
+                    onClick={() => handleKeypadPress(keyButton, field)}
+                    key={keyButton}
                   >
-                    {key}
+                    {keyButton}
                   </Button>
                 ))}
                 <Button

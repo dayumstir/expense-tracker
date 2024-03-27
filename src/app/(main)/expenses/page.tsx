@@ -14,7 +14,6 @@ export default async function Expenses() {
 
   const expenses = await getAllExpenses();
   const uniqueDates = await getExpensesDatesUnique();
-  console.log("uniqueDates", uniqueDates);
 
   return (
     <div className="flex w-full flex-col justify-center px-8 pb-[72px] pt-[88px]">

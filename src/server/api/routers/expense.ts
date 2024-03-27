@@ -63,4 +63,49 @@ export const expenseRouter = createTRPCRouter({
 
     return uniqueDatesArray;
   }),
+
+  update: privateProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        title: z.string().min(1),
+        amount: z
+          .string()
+          .min(1)
+          .regex(/^(?!0(\.0*)?$).*$/), // Amount !== "0" || "0." || "0.0"|| "0.00"
+        date: z.date(),
+        category: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const expense = await ctx.db.expense.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          title: input.title,
+          amount: input.amount,
+          date: input.date,
+          category: input.category,
+        },
+      });
+
+      return expense;
+    }),
+
+  delete: privateProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const expense = await ctx.db.expense.delete({
+        where: {
+          id: input.id,
+        },
+      });
+
+      return expense;
+    }),
 });

@@ -15,7 +15,9 @@ export default async function LogoutButton() {
   return (
     <form action={logout}>
       <Button asChild variant="destructive">
-        <Link href={"/login"}>Logout</Link>
+        <Link href={"/login"} className="text-destructive-foreground">
+          Logout
+        </Link>
       </Button>
     </form>
   );
