@@ -40,7 +40,7 @@ import { Loader2 } from "lucide-react";
 const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0"];
 
 const expenseSchema = z.object({
-  title: z.string().min(1),
+  title: z.string().min(1).max(20),
   amount: z
     .string()
     .min(1)

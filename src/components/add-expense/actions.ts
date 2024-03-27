@@ -5,22 +5,18 @@ import { type ExpenseSchemaType } from "~/components/add-expense/ExpenseForm";
 import { api } from "~/trpc/server";
 
 export async function createNewExpense(data: ExpenseSchemaType) {
-  const setTimeToZero = (date: Date) => {
-    date.setHours(0);
-    date.setMinutes(0);
-    date.setSeconds(0);
-    date.setMilliseconds(0);
-    return date;
-  };
-
   await api.expense.create({
     title: data.title,
     amount: data.amount,
-    date: setTimeToZero(data.date),
+    date: data.date,
     category: data.category,
   });
-
   redirect("/expenses");
+}
+
+export async function getAllExpenses() {
+  const expenses = await api.expense.getAll();
+  return expenses;
 }
 
 export async function getCategories() {

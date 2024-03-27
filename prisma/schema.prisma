@@ -23,7 +23,7 @@ model Expense {
   id       String   @id @default(cuid())
   amount   Decimal  @db.Decimal(10, 2)
   title    String
-  date     DateTime
+  date     DateTime @db.Date
   category String
 
   userId String

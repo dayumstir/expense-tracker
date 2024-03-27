@@ -27,13 +27,40 @@ export const expenseRouter = createTRPCRouter({
 
       return expense;
     }),
+
   getAll: privateProcedure.query(async ({ ctx }) => {
     const expenses = await ctx.db.expense.findMany({
       where: {
         userId: ctx.user.id,
       },
+      orderBy: {
+        id: "desc",
+      },
     });
 
-    return expenses;
+    const expensesWithoutDecimalType = expenses.map((expense) => ({
+      ...expense,
+      amount: Number(expense.amount),
+    }));
+
+    return expensesWithoutDecimalType;
+  }),
+
+  getDates: privateProcedure.query(async ({ ctx }) => {
+    const uniqueDates = await ctx.db.expense.findMany({
+      select: {
+        date: true,
+      },
+      where: {
+        userId: ctx.user.id,
+      },
+      distinct: ["date"],
+    });
+
+    const uniqueDatesArray = uniqueDates
+      .map((date) => date.date)
+      .sort((a, b) => b.getTime() - a.getTime());
+
+    return uniqueDatesArray;
   }),
 });
