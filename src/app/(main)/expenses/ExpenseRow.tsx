@@ -8,6 +8,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "~/components/ui/drawer";
+import { ExpenseEditForm } from "./ExpenseEditForm";
 
 type Expense = {
   id: string;
@@ -44,7 +45,7 @@ export default function ExpenseRow({ expense }: { expense: Expense }) {
               Edit Expense
             </DrawerTitle>
           </DrawerHeader>
-          {/* <ExpenseForm closeDrawer={closeDrawer} /> */}
+          <ExpenseEditForm closeDrawer={closeDrawer} />
         </div>
       </DrawerContent>
     </Drawer>

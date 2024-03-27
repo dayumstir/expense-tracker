@@ -17,7 +17,7 @@ type Props = {
 
 export default async function ExpenseBlock(props: Props) {
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex w-full flex-col pb-4">
       <h2 className="text-muted-foreground">
         {isSameDay(props.date, new Date())
           ? "Today"

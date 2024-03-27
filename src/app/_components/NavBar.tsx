@@ -9,7 +9,7 @@ import {
   Cog6ToothIcon,
 } from "@heroicons/react/24/solid";
 import { ExpenseDrawer } from "./add-expense/ExpenseDrawer";
-import { Button } from "./ui/button";
+import { Button } from "~/components/ui/button";
 
 export function NavBar() {
   const pathname = usePathname();

@@ -46,7 +46,7 @@ export const expenseRouter = createTRPCRouter({
     return expensesWithoutDecimalType;
   }),
 
-  getDates: privateProcedure.query(async ({ ctx }) => {
+  getUniqueDates: privateProcedure.query(async ({ ctx }) => {
     const uniqueDates = await ctx.db.expense.findMany({
       select: {
         date: true,

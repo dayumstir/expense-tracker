@@ -3,7 +3,7 @@ import "~/styles/globals.css";
 import { Inter } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
-import { ThemeProvider } from "~/components/theme-provider";
+import { ThemeProvider } from "~/app/_components/theme-provider";
 import type { Metadata, Viewport } from "next";
 import { Toaster } from "~/components/ui/sonner";
 

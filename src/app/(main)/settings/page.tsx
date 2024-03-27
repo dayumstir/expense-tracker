@@ -1,4 +1,4 @@
-import { DarkMode } from "~/components/DarkMode";
+import { DarkMode } from "~/app/_components/DarkMode";
 import LogoutButton from "./LogoutButton";
 import { createClient } from "~/utils/supabase/server";
 import { redirect } from "next/navigation";

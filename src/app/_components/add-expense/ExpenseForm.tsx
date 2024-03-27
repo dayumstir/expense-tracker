@@ -26,7 +26,7 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { toast } from "sonner";
-import { Input } from "../ui/input";
+import { Input } from "~/components/ui/input";
 
 import {
   BackspaceIcon,
