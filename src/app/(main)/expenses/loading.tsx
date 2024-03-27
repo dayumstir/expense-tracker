@@ -4,7 +4,7 @@ import { Skeleton } from "~/components/ui/skeleton";
 const ExpenseRowSkeleton = () => {
   return (
     <div className="mb-2 flex w-full gap-4 px-4 py-2">
-      <Skeleton className="h-12 w-12 rounded-full" />
+      <Skeleton className="h-10 w-10 rounded-full" />
       <div className="flex flex-col gap-2">
         <Skeleton className="h-4 w-[200px]" />
         <Skeleton className="h-4 w-[150px]" />
@@ -25,6 +25,11 @@ const ExpenseBlockSkeleton = ({ children }: { children: React.ReactNode }) => {
 export default function Loading() {
   return (
     <div className="flex w-full flex-col items-center gap-4 px-8 pt-24">
+      <ExpenseBlockSkeleton>
+        <ExpenseRowSkeleton />
+        <ExpenseRowSkeleton />
+        <ExpenseRowSkeleton />
+      </ExpenseBlockSkeleton>
       <ExpenseBlockSkeleton>
         <ExpenseRowSkeleton />
         <ExpenseRowSkeleton />
