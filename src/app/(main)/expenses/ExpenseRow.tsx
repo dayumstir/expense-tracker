@@ -84,7 +84,7 @@ export default function ExpenseRow({ expense }: { expense: Expense }) {
       <DrawerTrigger asChild>
         <div className="mb-2 flex w-full justify-between px-4 py-2">
           <div className="flex flex-col gap-0.5">
-            <h2 className="">{expense.title}</h2>
+            <h2>{expense.title}</h2>
             <p className="text-xs text-muted-foreground">{expense.category}</p>
           </div>
 

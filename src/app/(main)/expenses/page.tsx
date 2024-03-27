@@ -3,9 +3,7 @@ import { getAllExpenses } from "./actions";
 import { createClient } from "~/utils/supabase/server";
 import { getExpensesDatesUnique } from "./actions";
 import { isSameDay } from "date-fns";
-
 import ExpenseBlock from "./ExpenseBlock";
-import PageHeader from "~/app/_components/PageHeader";
 
 export default async function Expenses() {
   const supabase = createClient();
@@ -17,7 +15,6 @@ export default async function Expenses() {
 
   return (
     <div className="flex w-full flex-col justify-center px-8 pb-[72px] pt-[88px]">
-      <PageHeader title={"Expenses"} />
       <div className="flex w-full flex-col">
         {uniqueDates.map((date) => {
           const expensesOnThatDate = expenses.filter((expense) =>
