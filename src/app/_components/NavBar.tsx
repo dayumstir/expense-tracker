@@ -19,7 +19,7 @@ export function NavBar() {
   };
 
   return (
-    <div className="pb-safe-or-4 fixed bottom-0 flex w-full items-center justify-evenly bg-muted p-4">
+    <div className="fixed bottom-0 z-10 flex w-full items-center justify-evenly bg-muted p-4 pb-safe-or-4">
       <Button
         asChild
         variant="ghost"
