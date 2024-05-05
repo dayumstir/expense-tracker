@@ -38,6 +38,8 @@ export const expenseRouter = createTRPCRouter({
       },
     });
 
+    // TODO: Format this in frontend (ExpenseRow.tsx)
+
     const expensesWithoutDecimalType = expenses.map((expense) => ({
       ...expense,
       amount: Number(expense.amount),

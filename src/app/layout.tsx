@@ -1,15 +1,17 @@
 import "~/styles/globals.css";
 
-import { Inter } from "next/font/google";
+import { Nunito } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { ThemeProvider } from "~/app/_components/theme-provider";
 import type { Metadata, Viewport } from "next";
 import { Toaster } from "~/components/ui/sonner";
 
-const inter = Inter({
+const nunito = Nunito({
+  weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
+  style: ["normal", "italic"],
   subsets: ["latin"],
-  variable: "--font-sans",
+  display: "swap",
 });
 
 const APP_NAME = "Penny - Expense Tracker";
@@ -67,7 +69,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable}`}>
+      <body className={`${nunito.className}`}>
         <TRPCReactProvider>
           <ThemeProvider
             attribute="class"

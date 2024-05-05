@@ -33,7 +33,6 @@ export default function Loading() {
       <ExpenseBlockSkeleton>
         <ExpenseRowSkeleton />
         <ExpenseRowSkeleton />
-        <ExpenseRowSkeleton />
       </ExpenseBlockSkeleton>
       <ExpenseBlockSkeleton>
         <ExpenseRowSkeleton />
