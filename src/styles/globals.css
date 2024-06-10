@@ -67,6 +67,9 @@
     -ms-user-select: none;
     user-select: none;
   }
+  *:focus {
+    @apply outline-none;
+  }
 }
 
 @keyframes shake {
